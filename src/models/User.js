@@ -7,11 +7,14 @@ const User = new Schema({
     last_name: String,
     email: {
         type: String,
-        unique: true
+        unique: true,
+        required: [true, 'Email required']
+
     },
     password: {
         type: String,
-        unique: true
+        required: [true, 'Password required'],
+        maxlength: 200
     },
     role: [{
         ref: "Role",
@@ -21,6 +24,8 @@ const User = new Schema({
     timestamps: true,
     versionKey: false
 })
+
+
 
 User.statics.encryptPassword = async (password) => {
     const salt = bcrypt.genSaltSync(10)

@@ -5,8 +5,10 @@ import * as authCtrl from '../controllers/auth.controller'
 import { verifySignUp } from "../middlewares";
 
 router.post('/signup', [
+    verifySignUp.checkRolesExisted,
     verifySignUp.checkDuplicatedEmail,
-    verifySignUp.checkRolesExisted
+    verifySignUp.checkCredentialsExist,
+    verifySignUp.validatePasswordLenght
 ], authCtrl.signUp)
 router.post('/signin', authCtrl.signIn)
 
