@@ -42,6 +42,8 @@ export const confirmPassword = async (req, res, next) => {
     const confirmPassword = req.body.confirmPassword;
 
     if (confirmPassword !== password) return res.status(400).json({ message: 'Passwords do not match' });
+
+    next();
 }
 
 export const checkRolesExisted = (req, res, next) => {
