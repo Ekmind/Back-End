@@ -28,8 +28,8 @@ export const checkCredentialsExist = async (req, res, next) => {
 export const validatePasswordLenght = async (req, res, next) => {
     const password = await req.body.password;
 
-    console.log(password)
-    console.log('password:', password.length)
+    // console.log(password)
+    // console.log('password:', password.length)
 
     if (password.length < 8) return res.status(403).json({ message: 'Min 8 characters' });
     if (password.length > 24) return res.status(403).json({ message: 'Max 24 characters' });
