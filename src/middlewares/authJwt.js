@@ -6,7 +6,7 @@ import Role from "../models/Role";
 export const verifyToken = async (req, res, next) => {
     try {
         const token = req.headers['x-access-token']
-        console.log(token)
+        // console.log('provided token: ' + token)
 
         if (!token) return res.status(403).json({ message: 'No token was provided' })
 
@@ -15,7 +15,7 @@ export const verifyToken = async (req, res, next) => {
 
         const user = await User.findById(req.userId, { password: 0 })
         if (!user) return res.status(404).json({ message: 'No user found' })
-        console.log(user)
+        // console.log('Token owner: ' + user)
         next()
     } catch (error) {
         return res.status(401).json({ message: 'Unauthorized' })

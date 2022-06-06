@@ -24,7 +24,7 @@ export const checkCredentialsExist = async (req, res, next) => {
     next();
 }
 
-export const validatePasswordLenght = async (req, res, next) => {
+export const validatePasswordLength = async (req, res, next) => {
     const password = await req.body.password;
 
     if (password.length < 8) return res.status(403).json({ message: 'Min 8 characters' });

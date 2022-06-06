@@ -2,15 +2,22 @@ import { Router } from "express";
 const router = Router()
 
 import * as authCtrl from '../controllers/auth.controller'
-import { verifySignUp } from "../middlewares";
+import { authJwt, verifySignUp } from "../middlewares";
 
 router.post('/signup', [
     verifySignUp.checkRolesExisted,
     verifySignUp.checkDuplicatedEmail,
     verifySignUp.checkCredentialsExist,
-    verifySignUp.validatePasswordLenght
+    verifySignUp.validatePasswordLength
 ], authCtrl.signUp)
+
 router.post('/signin', authCtrl.signIn)
+
+router.put('/edit/:userId', [
+    authJwt.verifyToken,
+    authCtrl.changeProfile,
+    verifySignUp.validatePasswordLength
+])
 
 
 export default router;

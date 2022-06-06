@@ -19,7 +19,11 @@ const User = new Schema({
     role: [{
         ref: "Role",
         type: Schema.Types.ObjectId
-    }]
+    }],
+    // patients: [{
+    //     ref: "Patients",
+    //     type: Schema
+    // }]
 }, {
     timestamps: true,
     versionKey: false
