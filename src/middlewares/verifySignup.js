@@ -1,9 +1,9 @@
-import User from '../models/User'
+import User from '../models/User';
 import { ROLES } from "../models/Role";
-const validator = require('validator')
+const validator = require('validator');
 
 export const checkDuplicatedEmail = async (req, res, next) => {
-    const email = await User.findOne({ email: req.body.email })
+    const email = await User.findOne({ email: req.body.email });
 
     if (email) return res.status(400).json({ message: 'Email already in use' })
 
@@ -11,37 +11,37 @@ export const checkDuplicatedEmail = async (req, res, next) => {
 }
 
 export const checkCredentialsExist = async (req, res, next) => {
-    const email = await req.body.email
-    const password = await req.body.password
+    const email = await req.body.email;
+    const password = await req.body.password;
     const isEmail = (email) => {
-        return validator.default.isEmail(email)
+        return validator.default.isEmail(email);
     }
     //console.log('password:', password.length)
 
-    if (!email || !password) return res.status(400).json({ message: 'Email or password missing' })
+    if (!email || !password) return res.status(400).json({ message: 'Email or password missing' });
 
-    if (!isEmail(email)) return res.status(403).json({ message: 'Enter a valid email' })
+    if (!isEmail(email)) return res.status(403).json({ message: 'Enter a valid email' });
 
-    next()
+    next();
 }
 
 export const validatePasswordLenght = async (req, res, next) => {
-    const password = await req.body.password
+    const password = await req.body.password;
 
     console.log(password)
     console.log('password:', password.length)
 
-    if (password.length < 8) return res.status(403).json({ message: 'Min 8 characters' })
-    if (password.length > 24) return res.status(403).json({ message: 'Max 24 characters' })
+    if (password.length < 8) return res.status(403).json({ message: 'Min 8 characters' });
+    if (password.length > 24) return res.status(403).json({ message: 'Max 24 characters' });
 
-    next()
+    next();
 }
 
 export const confirmPassword = async (req, res, next) => {
-    const password = req.body.password
-    const confirmPassword = req.body.confirmPassword
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
 
-    if (confirmPassword !== password) return res.status(400).json({ message: 'Passwords do not match' })
+    if (confirmPassword !== password) return res.status(400).json({ message: 'Passwords do not match' });
 }
 
 export const checkRolesExisted = (req, res, next) => {
@@ -51,7 +51,7 @@ export const checkRolesExisted = (req, res, next) => {
                 console.log(req.body.role[i])
                 return res.status(400).json({
                     message: `Role ${req.body.role[i]} does not exist`
-                })
+                });
             }
         }
     }
