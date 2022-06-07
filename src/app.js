@@ -14,11 +14,12 @@ app.use(morgan('dev'));
 app.use(express.json())
 app.use(CORS())
 
-/*app.get('/', (req, res) => {
+app.get('/', (req, res) => {
     res.json({
-        author: app.get('pkg').author
+        author: app.get('pkg').author,
+        name: "Ekmind API"
     })
-})*/
+})
 
 app.use('/api/user', userRoutes)
 app.use('/api/auth', authRoutes)
