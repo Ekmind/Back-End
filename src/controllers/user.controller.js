@@ -16,9 +16,6 @@ export const getUserByEmail = (req, res) => {
 
         })
 }
-export const SignIn = (req, res) => {
-
-}
 
 export const updateUser = (req, res) => {
 
