@@ -14,7 +14,7 @@ app.use(morgan('dev'));
 app.use(express.json())
 app.use(CORS())
 
-app.get('/', (req, res) => {
+app.get('/test', (req, res) => {
     res.json({
         author: app.get('pkg').author,
         name: "Ekmind API"
