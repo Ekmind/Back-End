@@ -20,10 +20,29 @@ const User = new Schema({
         ref: "Role",
         type: Schema.Types.ObjectId
     }],
-    // patients: [{
-    //     ref: "Patients",
-    //     type: Schema
-    // }]
+    patients: [{
+        name: String,
+        last_name: String,
+        age: Number,
+        gender: String,
+        image: String,
+        phone: Number,
+        email: String,
+        appointments: [{
+            date: Date,
+            notes: String,
+            emotional_data: {
+                angry: Number,
+                disgust: Number,
+                fear: Number,
+                happy: Number,
+                neutral: Number,
+                sad: Number,
+                surprise: Number
+            }
+
+        }]
+    }]
 }, {
     timestamps: true,
     versionKey: false
