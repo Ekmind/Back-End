@@ -1,4 +1,4 @@
-import app from "./app"
+const app = require('./app')
 import db from "./database"
 
 app.listen(3000);
