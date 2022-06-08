@@ -1,9 +1,9 @@
-const morgan = require("morgan")
-const express = require("express")
-const pkg = require('../package.json')
-const userRoutes = require("./routes/user.routes")
-const authRoutes = ("./routes/auth.routes")
-const createRoles = require("./libs/initialSetup")
+import morgan from "morgan";
+import express from "express";
+import pkg from '../package.json'
+import userRoutes from "./routes/user.routes"
+import authRoutes from "./routes/auth.routes"
+import { createRoles } from "./libs/initialSetup";
 const CORS = require('cors')
 
 const app = express();
@@ -24,3 +24,4 @@ app.get('/test', (req, res) => {
 app.use('/api/user', userRoutes)
 app.use('/api/auth', authRoutes)
 
+export default app;
