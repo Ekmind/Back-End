@@ -1,4 +1,4 @@
-import * as authJwt from "./authjwt";
-import * as verifySignUp from './verifySignup'
+const authJwt = require("./authjwt")
+const verifySignUp = require('./verifySignup')
 
 export { authJwt, verifySignUp }

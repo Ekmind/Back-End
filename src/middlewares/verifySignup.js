@@ -1,5 +1,5 @@
-import User from '../models/User';
-import { ROLES } from "../models/Role";
+const User = require('../models/User');
+const { ROLES } = require("../models/Role");
 const validator = require('validator');
 
 export const checkDuplicatedEmail = async (req, res, next) => {
