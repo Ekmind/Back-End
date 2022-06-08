@@ -1,8 +1,8 @@
 const { Router } = require("express");
 const router = Router()
 
-import * as authCtrl from '../controllers/auth.controller'
-import { authJwt, verifySignUp } from "../middlewares";
+const authCtrl = require('../controllers/auth.controller')
+const { authJwt, verifySignUp } = require("../middlewares")
 
 router.post('/signup', [
     verifySignUp.checkRolesExisted,
