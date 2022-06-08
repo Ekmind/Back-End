@@ -3,7 +3,7 @@ const config = require("../config")
 const User = require("../models/User")
 const Role = require("../models/Role")
 
-export const verifyToken = async (req, res, next) => {
+const verifyToken = async (req, res, next) => {
     try {
         const token = req.headers['x-access-token']
         // console.log('provided token: ' + token)
@@ -22,7 +22,7 @@ export const verifyToken = async (req, res, next) => {
     }
 };
 
-export const isModerator = async (req, res, next) => {
+const isModerator = async (req, res, next) => {
     const user = await User.findById(req.userId)
     const role = await Role.find({ _id: { $in: user.role } });
 
@@ -34,7 +34,7 @@ export const isModerator = async (req, res, next) => {
     }
     return res.status(403).json({ message: 'Moderator permissions required' })
 }
-export const isAdmin = async (req, res, next) => {
+const isAdmin = async (req, res, next) => {
     const user = await User.findById(req.userId)
     const role = await Role.find({ _id: { $in: user.role } });
 

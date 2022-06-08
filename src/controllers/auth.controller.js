@@ -4,7 +4,7 @@ const config = require("../config")
 const Role = require("../models/Role")
 const validator = require('validator')
 
-export const signUp = async (req, res) => {
+const signUp = async (req, res) => {
     const { name, last_name, email, password, role } = req.body
 
     const newUser = new User({
@@ -33,7 +33,7 @@ export const signUp = async (req, res) => {
 }
 
 
-export const signIn = async (req, res) => {
+const signIn = async (req, res) => {
     const userFound = await User.findOne({ email: req.body.email }).populate('role')
 
     if (!userFound) return res.status(400).json({ message: 'User not found' })
@@ -50,7 +50,7 @@ export const signIn = async (req, res) => {
 }
 
 
-export const changeProfile = async (req, res) => {
+const changeProfile = async (req, res) => {
     try {
         const updatedUser = await User.findByIdAndUpdate(req.userId, req.body)
         if (req.body.email) {

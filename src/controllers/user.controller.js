@@ -1,25 +1,25 @@
 const User = require("../models/User")
 
-export const createUser = async (req, res) => {
+const createUser = async (req, res) => {
     const { name, last_name, email, password } = req.body
     const newUser = new User({ name, last_name, email, password: User.encrypyPassword(password) });
     const newUserCreated = await newUser.save()
     res.status(200).json(newUserCreated)
 }
-export const getUsers = async (req, res) => {
+const getUsers = async (req, res) => {
     const users = await User.find();
     res.status(200).json(users)
 }
-export const getUserByEmail = (req, res) => {
+const getUserByEmail = (req, res) => {
     User.findOne({ email: req.body.email })
         .then(user => {
 
         })
 }
 
-export const updateUser = (req, res) => {
+const updateUser = (req, res) => {
 
 }
-export const deleteUser = (req, res) => {
+const deleteUser = (req, res) => {
 
 }

@@ -71,4 +71,4 @@ function compare(password, hash) {
 
 console.log(hash('Secret'))
 console.log(compare('Secret', '$2b$12$.GrSHIFXsoRZP9o185lAiuubm4vJS6GeC.r8wItIUaRDOS7f1ELAO'))*/
-export default model('User', User)
+model('User', User)

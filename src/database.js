@@ -9,4 +9,4 @@ const db = mongoose.connect(url, {
     .then(db => { console.log("Connection to", db.connection.name, "established"); })
     .catch(error => console.log(error))
 
-export default db;
+// export default db;

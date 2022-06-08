@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-export const ROLES = ['user', 'moderator', 'admin']
+const ROLES = ['user', 'moderator', 'admin']
 
 const Role = new Schema({
     name: String
@@ -9,4 +9,4 @@ const Role = new Schema({
 })
 
 
-export default model('Role', Role)
+model('Role', Role)
