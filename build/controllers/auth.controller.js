@@ -11,7 +11,7 @@ var _User = _interopRequireDefault(require("../models/User"));
 
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
-var _Config = _interopRequireDefault(require("../Config"));
+var _config = _interopRequireDefault(require("../config"));
 
 var _Role = _interopRequireDefault(require("../models/Role"));
 
@@ -93,7 +93,7 @@ var signUp = /*#__PURE__*/function () {
             savedUser = _context.sent;
             token = _jsonwebtoken["default"].sign({
               id: savedUser._id
-            }, _Config["default"].Secret, {
+            }, _config["default"].Secret, {
               expiresIn: "4h"
             });
             res.status(200).json({
@@ -159,7 +159,7 @@ var signIn = /*#__PURE__*/function () {
           case 10:
             token = _jsonwebtoken["default"].sign({
               id: userFound._id
-            }, _Config["default"].Secret, {
+            }, _config["default"].Secret, {
               expiresIn: "4h"
             });
             res.json({

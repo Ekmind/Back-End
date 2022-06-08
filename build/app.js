@@ -13,11 +13,11 @@ var _express = _interopRequireDefault(require("express"));
 
 var _package = _interopRequireDefault(require("../package.json"));
 
-var _User = _interopRequireDefault(require("./routes/User.routes"));
+var _user = _interopRequireDefault(require("./routes/user.routes"));
 
-var _Auth = _interopRequireDefault(require("./routes/Auth.routes"));
+var _auth = _interopRequireDefault(require("./routes/auth.routes"));
 
-var _InitialSetup = require("./libs/InitialSetup");
+var _initialSetup = require("./libs/initialSetup");
 
 var CORS = _interopRequireWildcard(require("cors"));
 
@@ -28,7 +28,7 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var app = (0, _express["default"])();
-(0, _InitialSetup.createRoles)();
+(0, _initialSetup.createRoles)();
 app.set('pkg', _package["default"]);
 app.use((0, _morgan["default"])('dev'));
 app.use(_express["default"].json());
@@ -39,7 +39,7 @@ app.get('/test', function (req, res) {
     name: "Ekmind API"
   });
 });
-app.use('/api/user', _User["default"]);
-app.use('/api/auth', _Auth["default"]);
+app.use('/api/user', _user["default"]);
+app.use('/api/auth', _auth["default"]);
 var _default = app;
 exports["default"] = _default;
