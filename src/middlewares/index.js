@@ -1,4 +1,4 @@
-import * as authJwt from "./authjwt";
-import * as verifySignUp from './verifySignup'
+import * as authJwt from "./AuthJwt";
+import * as verifySignUp from './VerifySignup'
 
 export { authJwt, verifySignUp }

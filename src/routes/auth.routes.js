@@ -2,7 +2,7 @@ import { Router } from "express";
 const router = Router()
 
 import * as authCtrl from '../controllers/auth.controller'
-import { authJwt, verifySignUp } from "../middlewares";
+import { authJwt, verifySignUp } from "../middlewares/Index";
 
 router.post('/signup', [
     verifySignUp.checkRolesExisted,

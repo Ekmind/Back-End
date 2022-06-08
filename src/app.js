@@ -1,10 +1,9 @@
 import morgan from "morgan";
 import express from "express";
 import pkg from '../package.json';
-import userRoutes from "./routes/user.routes";
-import authRoutes from "./routes/auth.routes";
-import { createRoles } from "./libs/initialSetup";
-import db from "./database";
+import userRoutes from "./routes/User.routes";
+import authRoutes from "./routes/Auth.routes";
+import { createRoles } from "./libs/InitialSetup";
 import * as CORS from "cors";
 
 const app = express();
@@ -24,8 +23,5 @@ app.get('/test', (req, res) => {
 
 app.use('/api/user', userRoutes)
 app.use('/api/auth', authRoutes)
-
-app.listen(3000);
-console.log('Server listen on port:', 3000)
 
 export default app;

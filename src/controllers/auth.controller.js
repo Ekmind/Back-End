@@ -1,6 +1,6 @@
 import User from "../models/User"
 import jtw from "jsonwebtoken"
-import config from "../config"
+import config from "../Config"
 import Role from "../models/Role"
 import * as validator from 'validator';
 
