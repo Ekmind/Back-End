@@ -1,6 +1,6 @@
 import User from '../models/User';
 import { ROLES } from "../models/Role";
-import * as validator from 'validator';
+const validator = require('validator');
 
 export const checkDuplicatedEmail = async (req, res, next) => {
     const email = await User.findOne({ email: req.body.email });

@@ -2,7 +2,7 @@ import User from "../models/User"
 import jtw from "jsonwebtoken"
 import config from "../config"
 import Role from "../models/Role"
-import * as validator from 'validator';
+const validator = require('validator');
 
 export const signUp = async (req, res) => {
     const { name, last_name, email, password, role } = req.body
