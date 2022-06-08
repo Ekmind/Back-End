@@ -7,7 +7,7 @@
   "scripts": {
     "built": "babel src --out-dir build",
     "dev": "nodemon src/index.js --exec babel-node",
-    "start": "node src/index.js"
+    "start": "node src/app.js"
   },
   "author": "Carlos Acosta",
   "license": "ISC",
