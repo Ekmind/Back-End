@@ -4,6 +4,7 @@ import pkg from '../package.json';
 import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
 import { createRoles } from "./libs/initialSetup";
+import db from "..src/database";
 import * as CORS from "cors";
 
 const app = express();
@@ -23,5 +24,8 @@ app.get('/test', (req, res) => {
 
 app.use('/api/user', userRoutes)
 app.use('/api/auth', authRoutes)
+
+app.listen(3000);
+console.log('Server listen on port:', 3000)
 
 export default app;
