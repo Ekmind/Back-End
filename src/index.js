@@ -1,5 +1,5 @@
 const app = require('./app')
-import db from "./database"
+const db = require("./database")
 
 app.listen(3000);
 console.log('Server listen on port:', 3000)
