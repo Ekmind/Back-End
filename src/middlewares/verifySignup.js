@@ -1,8 +1,8 @@
-const User = require('../models/User');
-const { ROLES } = require("../models/Role");
-const validator = require('validator');
+import User from '../models/User';
+import { ROLES } from "../models/Role";
+import * as validator from 'validator';
 
-const checkDuplicatedEmail = async (req, res, next) => {
+export const checkDuplicatedEmail = async (req, res, next) => {
     const email = await User.findOne({ email: req.body.email });
 
     if (email) return res.status(400).json({ message: 'Email already in use' });
@@ -10,7 +10,7 @@ const checkDuplicatedEmail = async (req, res, next) => {
     next();
 }
 
-const checkCredentialsExist = async (req, res, next) => {
+export const checkCredentialsExist = async (req, res, next) => {
     const email = await req.body.email;
     const password = await req.body.password;
     const isEmail = (email) => {
@@ -24,7 +24,7 @@ const checkCredentialsExist = async (req, res, next) => {
     next();
 }
 
-const validatePasswordLength = async (req, res, next) => {
+export const validatePasswordLength = async (req, res, next) => {
     const password = await req.body.password;
 
     if (password.length < 8) return res.status(403).json({ message: 'Min 8 characters' });
@@ -33,7 +33,7 @@ const validatePasswordLength = async (req, res, next) => {
     next();
 }
 
-const checkRolesExisted = (req, res, next) => {
+export const checkRolesExisted = (req, res, next) => {
     if (req.body.role) {
         for (let i = 0; i < req.body.role.length; i++) {
             if (!ROLES.includes(req.body.role[i])) {

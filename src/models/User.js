@@ -1,5 +1,5 @@
-const bcrypt = require("bcrypt")
-const { Schema, model } = require("mongoose")
+import * as bcrypt from "bcrypt";
+import { Schema, model } from "mongoose";
 
 
 const User = new Schema({
@@ -71,4 +71,6 @@ function compare(password, hash) {
 
 console.log(hash('Secret'))
 console.log(compare('Secret', '$2b$12$.GrSHIFXsoRZP9o185lAiuubm4vJS6GeC.r8wItIUaRDOS7f1ELAO'))*/
-model('User', User)
+
+
+export default model('User', User)

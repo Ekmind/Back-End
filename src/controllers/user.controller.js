@@ -1,25 +1,25 @@
-const User = require("../models/User")
+import User from "../models/User"
 
-const createUser = async (req, res) => {
+export const createUser = async (req, res) => {
     const { name, last_name, email, password } = req.body
     const newUser = new User({ name, last_name, email, password: User.encrypyPassword(password) });
     const newUserCreated = await newUser.save()
     res.status(200).json(newUserCreated)
 }
-const getUsers = async (req, res) => {
+export const getUsers = async (req, res) => {
     const users = await User.find();
     res.status(200).json(users)
 }
-const getUserByEmail = (req, res) => {
+export const getUserByEmail = (req, res) => {
     User.findOne({ email: req.body.email })
         .then(user => {
 
         })
 }
 
-const updateUser = (req, res) => {
+export const updateUser = (req, res) => {
 
 }
-const deleteUser = (req, res) => {
+export const deleteUser = (req, res) => {
 
 }

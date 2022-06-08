@@ -1,8 +1,8 @@
-const { Router } = require("express");
+import { Router } from "express";
 const router = Router()
 
-const userCtrl = require("../controllers/user.controller")
-const { authJwt, verifySignUp } = require("../middlewares")
+import * as userCtrl from "../controllers/user.controller"
+import { authJwt, verifySignUp } from "../middlewares";
 
 router.post('/create', [
     authJwt.verifyToken,
@@ -10,4 +10,4 @@ router.post('/create', [
     verifySignUp.checkRolesExisted
 ], userCtrl.createUser)
 
-// export default router;
+export default router;

@@ -1,9 +1,9 @@
-const jwt = require("jsonwebtoken")
-const config = require("../config")
-const User = require("../models/User")
-const Role = require("../models/Role")
+import jwt from "jsonwebtoken"
+import config from "../config"
+import User from "../models/User"
+import Role from "../models/Role";
 
-const verifyToken = async (req, res, next) => {
+export const verifyToken = async (req, res, next) => {
     try {
         const token = req.headers['x-access-token']
         // console.log('provided token: ' + token)
@@ -22,7 +22,7 @@ const verifyToken = async (req, res, next) => {
     }
 };
 
-const isModerator = async (req, res, next) => {
+export const isModerator = async (req, res, next) => {
     const user = await User.findById(req.userId)
     const role = await Role.find({ _id: { $in: user.role } });
 
@@ -34,7 +34,7 @@ const isModerator = async (req, res, next) => {
     }
     return res.status(403).json({ message: 'Moderator permissions required' })
 }
-const isAdmin = async (req, res, next) => {
+export const isAdmin = async (req, res, next) => {
     const user = await User.findById(req.userId)
     const role = await Role.find({ _id: { $in: user.role } });
 

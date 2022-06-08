@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const url = "mongodb+srv://Alastor:crRJpX6iUOVxk122@cluster0.qqupiwk.mongodb.net/Sample";
 const db = mongoose.connect(url, {
@@ -9,4 +9,4 @@ const db = mongoose.connect(url, {
     .then(db => { console.log("Connection to", db.connection.name, "established"); })
     .catch(error => console.log(error))
 
-// export default db;
+export default db;

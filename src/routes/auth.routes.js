@@ -1,8 +1,8 @@
-const { Router } = require("express");
+import { Router } from "express";
 const router = Router()
 
-const authCtrl = require('../controllers/auth.controller')
-const { authJwt, verifySignUp } = require("../middlewares")
+import * as authCtrl from '../controllers/auth.controller'
+import { authJwt, verifySignUp } from "../middlewares";
 
 router.post('/signup', [
     verifySignUp.checkRolesExisted,
@@ -20,4 +20,4 @@ router.put('/edit/:userId', [
 ])
 
 
-// export default router;
+export default router;

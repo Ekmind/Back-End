@@ -1,10 +1,10 @@
-const User = require("../models/User")
-const jtw = require("jsonwebtoken")
-const config = require("../config")
-const Role = require("../models/Role")
-const validator = require('validator')
+import User from "../models/User"
+import jtw from "jsonwebtoken"
+import config from "../config"
+import Role from "../models/Role"
+import * as validator from 'validator';
 
-const signUp = async (req, res) => {
+export const signUp = async (req, res) => {
     const { name, last_name, email, password, role } = req.body
 
     const newUser = new User({
@@ -33,7 +33,7 @@ const signUp = async (req, res) => {
 }
 
 
-const signIn = async (req, res) => {
+export const signIn = async (req, res) => {
     const userFound = await User.findOne({ email: req.body.email }).populate('role')
 
     if (!userFound) return res.status(400).json({ message: 'User not found' })
@@ -50,7 +50,7 @@ const signIn = async (req, res) => {
 }
 
 
-const changeProfile = async (req, res) => {
+export const changeProfile = async (req, res) => {
     try {
         const updatedUser = await User.findByIdAndUpdate(req.userId, req.body)
         if (req.body.email) {
