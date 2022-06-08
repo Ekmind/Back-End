@@ -1,5 +1,7 @@
 "use strict";
 
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -11,18 +13,22 @@ var _express = _interopRequireDefault(require("express"));
 
 var _package = _interopRequireDefault(require("../package.json"));
 
-var _user = _interopRequireDefault(require("./routes/user.routes"));
+var _User = _interopRequireDefault(require("./routes/User.routes"));
 
-var _auth = _interopRequireDefault(require("./routes/auth.routes"));
+var _Auth = _interopRequireDefault(require("./routes/Auth.routes"));
 
-var _initialSetup = require("./libs/initialSetup");
+var _InitialSetup = require("./libs/InitialSetup");
+
+var CORS = _interopRequireWildcard(require("cors"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var CORS = require('cors');
-
 var app = (0, _express["default"])();
-(0, _initialSetup.createRoles)();
+(0, _InitialSetup.createRoles)();
 app.set('pkg', _package["default"]);
 app.use((0, _morgan["default"])('dev'));
 app.use(_express["default"].json());
@@ -33,7 +39,7 @@ app.get('/test', function (req, res) {
     name: "Ekmind API"
   });
 });
-app.use('/api/user', _user["default"]);
-app.use('/api/auth', _auth["default"]);
+app.use('/api/user', _User["default"]);
+app.use('/api/auth', _Auth["default"]);
 var _default = app;
 exports["default"] = _default;

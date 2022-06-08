@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "built": "babel src --out-dir build",
-    "dev": "nodemon src/Index.js --exec babel-node",
-    "start": "node ./Index.js"
+    "dev": "nodemon src/index.js --exec babel-node",
+    "start": "node build/index.js"
   },
   "author": "Carlos Acosta",
   "license": "ISC",
@@ -31,6 +30,7 @@
     "nodemon": "^2.0.16"
   },
   "engines": {
-    "node": "16.15.0"
+    "node": "16.15.0",
+    "npm": "8.5.5"
   }
 }

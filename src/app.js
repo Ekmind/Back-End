@@ -1,9 +1,9 @@
 import morgan from "morgan";
 import express from "express";
 import pkg from '../package.json';
-import userRoutes from "./routes/User.routes";
-import authRoutes from "./routes/Auth.routes";
-import { createRoles } from "./libs/InitialSetup";
+import userRoutes from "./routes/user.routes";
+import authRoutes from "./routes/auth.routes";
+import { createRoles } from "./libs/initialSetup";
 import * as CORS from "cors";
 
 const app = express();

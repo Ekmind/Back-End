@@ -1,4 +1,4 @@
-import app from "./App"
+import app from "./app"
 import db from "./database"
 
 app.listen(3000);

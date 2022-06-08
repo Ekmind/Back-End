@@ -7,11 +7,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.verifySignUp = exports.authJwt = void 0;
 
-var authJwt = _interopRequireWildcard(require("./authjwt"));
+var authJwt = _interopRequireWildcard(require("./AuthJwt"));
 
 exports.authJwt = authJwt;
 
-var verifySignUp = _interopRequireWildcard(require("./verifySignup"));
+var verifySignUp = _interopRequireWildcard(require("./VerifySignup"));
 
 exports.verifySignUp = verifySignUp;
 

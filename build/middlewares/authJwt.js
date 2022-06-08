@@ -9,7 +9,7 @@ exports.verifyToken = exports.isModerator = exports.isAdmin = void 0;
 
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
-var _config = _interopRequireDefault(require("../config"));
+var _Config = _interopRequireDefault(require("../Config"));
 
 var _User = _interopRequireDefault(require("../models/User"));
 
@@ -43,7 +43,7 @@ var verifyToken = /*#__PURE__*/function () {
             }));
 
           case 4:
-            decoded = _jsonwebtoken["default"].verify(token, _config["default"].Secret);
+            decoded = _jsonwebtoken["default"].verify(token, _Config["default"].Secret);
             req.userId = decoded.id;
             _context.next = 8;
             return _User["default"].findById(req.userId, {
