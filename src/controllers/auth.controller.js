@@ -1,45 +1,10 @@
 const jwt = require('jsonwebtoken');
 import User from '../models/User';
 import Role from '../models/Role';
+import { handleErrors } from "../errors/handler.error";
 
 //1h
 const Time = (1000 * 60 * 60);
-
-const handleErrors = (err) => {
-    console.log(err.message, err.code);
-    // console.log(err.code)
-    let errors = {
-        name: "",
-        last_name: "",
-        email: "",
-        password: ""
-    };
-
-    //Wrong email
-    if (err.message === 'No user with that email exist') {
-        errors.email = 'User not found';
-    }
-    //Wrong password
-    if (err.message === 'Wrong password') {
-        errors.password = 'Incorrect password';
-    }
-
-    //Duplicated email error
-    if (err.code === 11000) {
-        errors.email = 'Email is already in use';
-        return errors;
-    }
-
-    if (err.message.includes('user validation failed')) {
-        Object.values(err.errors).forEach(error => {
-            // console.log(error.message)
-            errors[error.path] = error.message;
-        });
-
-    }
-    console.log(errors.email);
-    return errors;
-}
 
 const createToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -116,19 +81,49 @@ module.exports.update_patient = async (req, res) => {
     const { name, last_name, age, gender, image, phone, email } = await req.body
     try {
         console.log(await req.params._id)
-        const newPatient = await User.updateOne({ _id: req.params._id }, {
-            $set: {
-                patients: [{
-                    name: name,
-                    last_name: last_name,
-                    age: age,
-                    gender: gender,
-                    image: image,
-                    phone: phone,
-                    email: email
-                }]
-            }
-        });
+        const newPatient = await User.updateOne(
+            { "patients._id": req.params._id },
+            {
+                $set: {
+                    "patients.$": [{
+                        name: name,
+                        last_name: last_name,
+                        age: age,
+                        gender: gender,
+                        image: image,
+                        phone: phone,
+                        email: email
+                    }]
+                }
+            });
+
+        res.status(200).json({ patient: newPatient })
+        return newPatient
+    } catch (err) {
+        const errors = handleErrors(err);
+        console.log({ errors });
+    }
+}
+
+module.exports.delete_patient = async (req, res) => {
+    const { name, last_name, age, gender, image, phone, email } = await req.body
+    try {
+        console.log(await req.params._id)
+        const newPatient = await User.updateOne(
+            { "patients._id": req.params._id },
+            {
+                $set: {
+                    "patients.$": [{
+                        name: name,
+                        last_name: last_name,
+                        age: age,
+                        gender: gender,
+                        image: image,
+                        phone: phone,
+                        email: email
+                    }]
+                }
+            });
 
         res.status(200).json({ patient: newPatient })
         return newPatient
