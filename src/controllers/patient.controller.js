@@ -4,19 +4,20 @@ import { handleErrors } from "../errors/handler.error";
 module.exports.create_patient = async (req, res) => {
     const { name, last_name, age, gender, image, phone, email } = await req.body
     try {
-        const newPatient = await User.updateOne({ _id: req.userId }, {
-            $push: {
-                patients: [{
-                    name: name,
-                    last_name: last_name,
-                    age: age,
-                    gender: gender,
-                    image: image,
-                    phone: phone,
-                    email: email
-                }]
-            }
-        });
+        const newPatient = await User.updateOne({ _id: req.userId },
+            {
+                $push: {
+                    patients: [{
+                        name: name,
+                        last_name: last_name,
+                        age: age,
+                        gender: gender,
+                        image: image,
+                        phone: phone,
+                        email: email
+                    }]
+                }
+            });
 
         res.status(200).json({ patient: newPatient })
         return newPatient
@@ -34,7 +35,8 @@ module.exports.update_patient = async (req, res) => {
             { "patients._id": req.params._id },
             {
                 $set: {
-                    "patients.$": [{
+                    patients: [{
+                        _id: req.params._id,
                         name: name,
                         last_name: last_name,
                         age: age,
@@ -44,7 +46,9 @@ module.exports.update_patient = async (req, res) => {
                         email: email
                     }]
                 }
-            });
+            },
+            { new: true }
+        );
 
         res.status(200).json({ patient: updatedPatient })
         return updatedPatient
@@ -56,13 +60,13 @@ module.exports.update_patient = async (req, res) => {
 
 module.exports.delete_patient = async (req, res) => {
     try {
+
         console.log('user id:', req.userId, 'patient id:', req.params.delete_id)
         const deletedPatient = await User.updateOne(
             { _id: req.userId },
             { $pull: { patients: { _id: req.params.delete_id } } },
             { new: true }
         );
-
 
         res.status(200).json({ patient: deletedPatient })
         return deletedPatient

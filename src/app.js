@@ -1,8 +1,7 @@
 import morgan from "morgan";
 import express from "express";
 import pkg from '../package.json';
-// import userRoutes from "./routes/user.routes";
-import authRoutes from "./routes/auth.routes";
+import hubRoutes from "./routes/hub.routes";
 import { createRoles } from "./libs/initialSetup";
 const cookieParser = require('cookie-parser');
 const CORS = require('cors');
@@ -23,7 +22,7 @@ app.get('/test', (req, res) => {
     })
 })
 
-app.use('/api/auth', authRoutes);
+app.use('/api/', hubRoutes);
 // app.use('/api/user', userRoutes)
 
 export default app;

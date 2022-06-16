@@ -1,6 +1,8 @@
 import * as bcrypt from "bcrypt";
+import Patient from "./Patient";
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
+
 
 
 const userSchema = new mongoose.Schema({
@@ -41,39 +43,17 @@ const userSchema = new mongoose.Schema({
         ref: "Role",
         type: mongoose.Schema.Types.ObjectId
     }],
-    patients: [{
-        name: String,
-        last_name: String,
-        age: Number,
-        gender: String,
-        image: String,
-        phone: Number,
-        email: String,
-        appointments: [{
-            date: Date,
-            notes: String,
-            emotional_data: [{
-                angry: Number,
-                disgust: Number,
-                fear: Number,
-                happy: Number,
-                neutral: Number,
-                sad: Number,
-                surprise: Number
-            }]
-
-        }]
-    }]
+    patients: [Patient]
 }, {
     timestamps: true,
     versionKey: false
-})
+});
 
 userSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSaltSync(12);
     this.password = await bcrypt.hashSync(this.password, salt);
     next();
-})
+});
 
 //Static method to login user
 
