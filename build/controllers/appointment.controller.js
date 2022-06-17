@@ -26,7 +26,7 @@ module.exports.create_appointment = /*#__PURE__*/function () {
             _context.prev = 1;
             _context.next = 4;
             return _User["default"].updateOne({
-              _id: req.params.patient_id
+              "patients._id": req.params.patient_id
             }, {
               $push: {
                 "patients.$.appointments": [{

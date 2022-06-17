@@ -36,7 +36,7 @@ module.exports.create_patient = /*#__PURE__*/function () {
             email = _yield$req$body.email;
             _context.prev = 10;
             _context.next = 13;
-            return _User["default"].updateOne({
+            return _User["default"].findOneAndUpdate({
               _id: req.userId
             }, {
               $push: {
@@ -50,29 +50,33 @@ module.exports.create_patient = /*#__PURE__*/function () {
                   email: email
                 }]
               }
+            }, {
+              "new": true
             });
 
           case 13:
             newPatient = _context.sent;
             res.status(200).json({
-              patient: newPatient
+              message: 'Patient created',
+              patients: newPatient.patients
             });
-            return _context.abrupt("return", newPatient);
+            _context.next = 21;
+            break;
 
-          case 18:
-            _context.prev = 18;
+          case 17:
+            _context.prev = 17;
             _context.t0 = _context["catch"](10);
             errors = (0, _handler.handleErrors)(_context.t0);
             console.log({
               errors: errors
             });
 
-          case 22:
+          case 21:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[10, 18]]);
+    }, _callee, null, [[10, 17]]);
   }));
 
   return function (_x, _x2) {
@@ -82,7 +86,7 @@ module.exports.create_patient = /*#__PURE__*/function () {
 
 module.exports.update_patient = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-    var _yield$req$body2, name, last_name, age, gender, image, phone, email, updatedPatient, errors;
+    var _yield$req$body2, name, last_name, age, gender, image, phone, email, Patient, errors;
 
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
@@ -100,57 +104,49 @@ module.exports.update_patient = /*#__PURE__*/function () {
             image = _yield$req$body2.image;
             phone = _yield$req$body2.phone;
             email = _yield$req$body2.email;
-            _context2.prev = 10;
-            _context2.t0 = console;
-            _context2.next = 14;
-            return req.params._id;
-
-          case 14:
-            _context2.t1 = _context2.sent;
-
-            _context2.t0.log.call(_context2.t0, _context2.t1);
-
-            _context2.next = 18;
-            return _User["default"].updateOne({
-              "patients._id": req.params._id
+            _context2.next = 12;
+            return _User["default"].findOne({
+              "patients._id": req.params.patient_id
             }, {
-              $set: {
-                patients: [{
-                  _id: req.params._id,
-                  name: name,
-                  last_name: last_name,
-                  age: age,
-                  gender: gender,
-                  image: image,
-                  phone: phone,
-                  email: email
-                }]
+              patients: {
+                $elemMatch: {
+                  patient: {
+                    _id: req.params.patient_id
+                  }
+                }
               }
-            }, {
-              "new": true
             });
+
+          case 12:
+            Patient = _context2.sent;
+            console.log(Patient.patients);
+            _context2.prev = 14;
+            _context2.t0 = res;
+            _context2.next = 18;
+            return Patient.patients;
 
           case 18:
-            updatedPatient = _context2.sent;
-            res.status(200).json({
-              patient: updatedPatient
-            });
-            return _context2.abrupt("return", updatedPatient);
+            _context2.t1 = _context2.sent;
 
-          case 23:
-            _context2.prev = 23;
-            _context2.t2 = _context2["catch"](10);
+            _context2.t0.json.call(_context2.t0, _context2.t1);
+
+            _context2.next = 26;
+            break;
+
+          case 22:
+            _context2.prev = 22;
+            _context2.t2 = _context2["catch"](14);
             errors = (0, _handler.handleErrors)(_context2.t2);
             console.log({
               errors: errors
             });
 
-          case 27:
+          case 26:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[10, 23]]);
+    }, _callee2, null, [[14, 22]]);
   }));
 
   return function (_x3, _x4) {
@@ -168,7 +164,7 @@ module.exports.delete_patient = /*#__PURE__*/function () {
             _context3.prev = 0;
             console.log('user id:', req.userId, 'patient id:', req.params.delete_id);
             _context3.next = 4;
-            return _User["default"].updateOne({
+            return _User["default"].findOneAndUpdate({
               _id: req.userId
             }, {
               $pull: {
@@ -183,27 +179,122 @@ module.exports.delete_patient = /*#__PURE__*/function () {
           case 4:
             deletedPatient = _context3.sent;
             res.status(200).json({
-              patient: deletedPatient
+              message: 'Patient deleted',
+              patients: deletedPatient.patients
             });
-            return _context3.abrupt("return", deletedPatient);
+            _context3.next = 12;
+            break;
 
-          case 9:
-            _context3.prev = 9;
+          case 8:
+            _context3.prev = 8;
             _context3.t0 = _context3["catch"](0);
             errors = (0, _handler.handleErrors)(_context3.t0);
             console.log({
               errors: errors
             });
 
-          case 13:
+          case 12:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 9]]);
+    }, _callee3, null, [[0, 8]]);
   }));
 
   return function (_x5, _x6) {
     return _ref3.apply(this, arguments);
+  };
+}();
+
+module.exports.get_patient = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
+    var getPatient, errors;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.prev = 0;
+            console.log({
+              user: req.userId,
+              patient: req.params.patient_id
+            });
+            _context4.next = 4;
+            return _User["default"].findOne({
+              "patients._id": req.params.patient_id
+            }, {
+              patients: {
+                $elemMatch: {
+                  _id: req.params.patient_id
+                }
+              }
+            });
+
+          case 4:
+            getPatient = _context4.sent;
+            console.log('Patient found!', getPatient.patients);
+            res.status(200).json({
+              message: 'Patient found!',
+              patient: getPatient.patients
+            });
+            _context4.next = 14;
+            break;
+
+          case 9:
+            _context4.prev = 9;
+            _context4.t0 = _context4["catch"](0);
+            errors = (0, _handler.handleErrors)(_context4.t0);
+            console.log(errors);
+            res.status(400).json('Patient not found!');
+
+          case 14:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[0, 9]]);
+  }));
+
+  return function (_x7, _x8) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+module.exports.get_all_patients = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+    var getAllPatients, errors;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.prev = 0;
+            _context5.next = 3;
+            return _User["default"].findOne({
+              _id: req.userId
+            });
+
+          case 3:
+            getAllPatients = _context5.sent;
+            console.log(getAllPatients);
+            res.status(200).json(getAllPatients.patients);
+            _context5.next = 13;
+            break;
+
+          case 8:
+            _context5.prev = 8;
+            _context5.t0 = _context5["catch"](0);
+            errors = (0, _handler.handleErrors)(_context5.t0);
+            console.log(errors);
+            res.status(400).json('No patients found!');
+
+          case 13:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[0, 8]]);
+  }));
+
+  return function (_x9, _x10) {
+    return _ref5.apply(this, arguments);
   };
 }();

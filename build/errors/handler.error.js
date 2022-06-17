@@ -6,14 +6,22 @@ Object.defineProperty(exports, "__esModule", {
 exports.handleErrors = void 0;
 
 var handleErrors = function handleErrors(err) {
-  console.log(err.message, err.code); // console.log(err.code)
-
+  // console.log(err.code)
   var errors = {
     name: "",
     last_name: "",
     email: "",
     password: ""
-  }; //Wrong email
+  }; //Jwt expired
+
+  if (err.message.includes('jwt expired')) {
+    errors.message = 'jwt expired';
+    return {
+      error: errors.message,
+      code: err.code
+    };
+  } //Wrong email
+
 
   if (err.message === 'No user with that email exist') {
     errors.email = 'User not found';
@@ -37,6 +45,10 @@ var handleErrors = function handleErrors(err) {
     });
   }
 
+  console.log({
+    error: err.message,
+    code: err.code
+  });
   console.log(errors.email);
   return errors;
 };

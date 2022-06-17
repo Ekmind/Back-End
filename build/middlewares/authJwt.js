@@ -11,6 +11,8 @@ var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
 var _config = _interopRequireDefault(require("../config"));
 
+var _handler = require("../errors/handler.error");
+
 var _Role = _interopRequireDefault(require("../models/Role"));
 
 var _User = _interopRequireDefault(require("../models/User"));
@@ -25,13 +27,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var verifyToken = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res, next) {
-    var token, decoded, user;
+    var token, decoded, user, errors;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
-            token = req.headers['jwt']; // console.log('provided token: ' + token)
+            token = req.cookies['jwt']; // console.log('provided token: ' + token)
 
             if (token) {
               _context.next = 4;
@@ -65,18 +67,19 @@ var verifyToken = /*#__PURE__*/function () {
           case 11:
             // console.log('Token owner: ' + user)
             next();
-            _context.next = 18;
+            _context.next = 19;
             break;
 
           case 14:
             _context.prev = 14;
             _context.t0 = _context["catch"](0);
-            console.log(_context.t0);
+            errors = (0, _handler.handleErrors)(_context.t0);
+            console.log(errors);
             return _context.abrupt("return", res.status(401).json({
               message: 'Unauthorized'
             }));
 
-          case 18:
+          case 19:
           case "end":
             return _context.stop();
         }
