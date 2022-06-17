@@ -14,7 +14,8 @@ const userSchema = new mongoose.Schema({
             if (!name.match(letters)) {
                 return false;
             }
-        }, 'Only alphabetical characters']
+        }, 'Only alphabetical characters'],
+        maxlength: [24, '24 characters max']
     },
     last_name: {
         type: String,
@@ -24,7 +25,8 @@ const userSchema = new mongoose.Schema({
             if (!last_name.match(letters)) {
                 return false;
             }
-        }, 'Only alphabetical characters']
+        }, 'Only alphabetical characters'],
+        maxlength: [24, '24 characters max']
     },
     email: {
         type: String,
