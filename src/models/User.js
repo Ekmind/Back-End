@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter your name'],
         validate: [(name) => {
-            const letters = /^[A-Za-z]+$/
+            const letters = /^[A-zÀ-ú]*$/g;
             if (!name.match(letters)) {
                 return false;
             }
@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter your last name'],
         validate: [(last_name) => {
-            const letters = /^[A-zÀ-ú]+$/;
+            const letters = /^[A-zÀ-ú]*$/g;
             if (!last_name.match(letters)) {
                 return false;
             }

@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import config from "../config";
+import { handleErrors } from "../errors/handler.error";
 import Role from "../models/Role";
 import User from "../models/User";
 
@@ -18,7 +19,8 @@ export const verifyToken = async (req, res, next) => {
         // console.log('Token owner: ' + user)
         next();
     } catch (error) {
-        console.log(error)
+        const errors = handleErrors(error)
+        console.log(errors)
         return res.status(401).json({ message: 'Unauthorized' });
     }
 };

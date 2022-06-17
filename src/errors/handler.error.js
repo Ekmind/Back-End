@@ -1,5 +1,4 @@
 export const handleErrors = (err) => {
-    console.log(err.message, err.code);
     // console.log(err.code)
     let errors = {
         name: "",
@@ -7,6 +6,12 @@ export const handleErrors = (err) => {
         email: "",
         password: ""
     };
+
+    //Jwt expired
+    if (err.message.includes('jwt expired')) {
+        errors.message = 'jwt expired'
+        return { error: errors.message, code: err.code }
+    }
 
     //Wrong email
     if (err.message === 'No user with that email exist') {
@@ -30,6 +35,7 @@ export const handleErrors = (err) => {
         });
 
     }
+    console.log({ error: err.message, code: err.code });
     console.log(errors.email);
     return errors;
 }

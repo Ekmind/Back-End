@@ -5,7 +5,7 @@ module.exports.create_appointment = async (req, res) => {
     const { date, notes } = req.body;
     try {
         const newAppointment = await User.updateOne(
-            { _id: req.params.patient_id },
+            { "patients._id": req.params.patient_id },
             {
                 $push: {
                     "patients.$.appointments": [{
