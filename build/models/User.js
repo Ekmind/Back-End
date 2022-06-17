@@ -33,23 +33,25 @@ var userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please enter your name'],
     validate: [function (name) {
-      var letters = /^[A-zÀ-ú]*$/g;
+      var letters = /^[ a-zA-ZÀ-ÿ\u00f1\u00d1]*$/g;
 
       if (!name.match(letters)) {
         return false;
       }
-    }, 'Only alphabetical characters']
+    }, 'Only alphabetical characters'],
+    maxlength: [24, '24 characters max']
   },
   last_name: {
     type: String,
     required: [true, 'Please enter your last name'],
     validate: [function (last_name) {
-      var letters = /^[A-zÀ-ú]*$/g;
+      var letters = /^[ a-zA-ZÀ-ÿ\u00f1\u00d1]*$/g;
 
       if (!last_name.match(letters)) {
         return false;
       }
-    }, 'Only alphabetical characters']
+    }, 'Only alphabetical characters'],
+    maxlength: [24, '24 characters max']
   },
   email: {
     type: String,
