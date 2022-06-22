@@ -6,7 +6,7 @@ import User from "../models/User";
 
 export const verifyToken = async (req, res, next) => {
     try {
-        const token = req.cookies['jwt'];
+        const token = req.headers['jwt'];
         // console.log('provided token: ' + token)
 
         if (!token) return res.status(403).json({ message: 'No token was provided' });

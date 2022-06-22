@@ -16,7 +16,7 @@ router.post('/login', authCtrl.login_post);
 router.get('/logout', authCtrl.logout_get);
 
 router.put('/insert/patient/:userId', authJwt.verifyToken, patientCtrl.create_patient);
-router.put('/update/patient/:patient_id', authJwt.verifyToken, patientCtrl.update_patient);
+router.patch('/update/patient/:patient_id', authJwt.verifyToken, patientCtrl.update_patient);
 router.put('/delete/patient/:userId/:delete_id', authJwt.verifyToken, patientCtrl.delete_patient);
 
 router.get('/get/patient/:patient_id', authJwt.verifyToken, patientCtrl.get_patient);

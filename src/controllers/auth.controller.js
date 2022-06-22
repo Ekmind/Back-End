@@ -52,3 +52,11 @@ module.exports.logout_get = async (req, res) => {
     res.status(200).json('User was logged out successfully')
 }
 
+
+module.exports.user_update = async (req, res) => {
+    const { name, last_name, email, password } = req.body
+    const updatedUser = User.findOneAndUpdate(
+        { _id: req.userId },
+        {}
+    )
+}
