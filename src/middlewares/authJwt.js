@@ -1,15 +1,15 @@
 import jwt from "jsonwebtoken";
-import config from "../config";
 import { handleErrors } from "../errors/handler.error";
 import Role from "../models/Role";
 import User from "../models/User";
 
+//Check If User Token Exist
 export const verifyToken = async (req, res, next) => {
     try {
         const token = req.cookies['jwt'];
         // console.log('provided token: ' + token)
 
-        if (!token) return res.status(403).json({ message: 'No token was provided' });
+        if (!token) return res.status(403).json({ message: 'No token was provided (You are not logged in)' });
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.userId = decoded.id;

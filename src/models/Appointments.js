@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
-const Appointment = new mongoose.Schema(
+const appointmentSchema = new mongoose.Schema(
     {
         date: Date,
         notes: String,
+        patient: mongoose.Types.ObjectId,
         emotional_data: [{
             angry: Number,
             disgust: Number,
@@ -15,8 +16,11 @@ const Appointment = new mongoose.Schema(
         }]
     },
     {
-        timestamps: true
+        timestamps: true,
+        versionKey: false
     }
 );
+
+const Appointment = mongoose.model('Appointment', appointmentSchema)
 
 export default Appointment;

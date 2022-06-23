@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 import Appointment from "./Appointments";
+import User from "./User";
 
-const Patient = new mongoose.Schema({
+const patientSchema = new mongoose.Schema({
     name: String,
     last_name: String,
     age: Number,
@@ -9,7 +10,26 @@ const Patient = new mongoose.Schema({
     image: String,
     phone: Number,
     email: String,
-    appointments: [Appointment]
+    doctor: mongoose.Types.ObjectId,
+    appointments: {
+        ref: 'Appointment',
+        type: mongoose.Types.ObjectId
+    }
+}, {
+    timestamps: true,
+    versionKey: false
 });
 
-export default Patient;
+
+// patientSchema.pre('deleteOne', async function (next) {
+//     const remove = await User.findOne(
+//         { _id: this._id }
+//     );
+//     console.log('usuario:', remove)
+//     next();
+// })
+
+
+const Patient = mongoose.model('Patient', patientSchema);
+
+export default Patient

@@ -1,5 +1,4 @@
 export const handleErrors = (err) => {
-    // console.log(err.code)
     let errors = {
         name: "",
         last_name: "",
@@ -9,7 +8,7 @@ export const handleErrors = (err) => {
 
     //Jwt expired
     if (err.message.includes('jwt expired')) {
-        errors.message = 'jwt expired'
+        errors.message = 'Session expired'
         return { error: errors.message, code: err.code }
     }
 
@@ -28,6 +27,7 @@ export const handleErrors = (err) => {
         return errors;
     }
 
+    //Credentials error(s)
     if (err.message.includes('user validation failed')) {
         Object.values(err.errors).forEach(error => {
             // console.log(error.message)
@@ -36,6 +36,5 @@ export const handleErrors = (err) => {
 
     }
     console.log({ error: err.message, code: err.code });
-    console.log(errors.email);
     return errors;
 }

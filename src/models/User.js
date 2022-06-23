@@ -45,7 +45,10 @@ const userSchema = new mongoose.Schema({
         ref: "Role",
         type: mongoose.Schema.Types.ObjectId
     }],
-    patients: [Patient]
+    patients: [{
+        ref: "Patient",
+        type: mongoose.Schema.Types.ObjectId
+    }]
 }, {
     timestamps: true,
     versionKey: false
@@ -55,10 +58,10 @@ userSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSaltSync(12);
     this.password = await bcrypt.hashSync(this.password, salt);
     next();
-});
+}
+);
 
 //Static method to login user
-
 userSchema.statics.login = async (email, password) => {
     const user = await User.findOne({ email });
     if (user) {
