@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.handleErrors = void 0;
 
 var handleErrors = function handleErrors(err) {
-  // console.log(err.code)
   var errors = {
     name: "",
     last_name: "",
@@ -15,7 +14,7 @@ var handleErrors = function handleErrors(err) {
   }; //Jwt expired
 
   if (err.message.includes('jwt expired')) {
-    errors.message = 'jwt expired';
+    errors.message = 'Session expired';
     return {
       error: errors.message,
       code: err.code
@@ -36,7 +35,8 @@ var handleErrors = function handleErrors(err) {
   if (err.code === 11000) {
     errors.email = 'Email is already in use';
     return errors;
-  }
+  } //Credentials error(s)
+
 
   if (err.message.includes('user validation failed')) {
     Object.values(err.errors).forEach(function (error) {
@@ -49,7 +49,6 @@ var handleErrors = function handleErrors(err) {
     error: err.message,
     code: err.code
   });
-  console.log(errors.email);
   return errors;
 };
 

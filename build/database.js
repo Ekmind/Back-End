@@ -19,7 +19,7 @@ var db = _mongoose["default"].connect(url, {
 }).then(function (db) {
   console.log("Connection to", db.connection.name, "established");
 })["catch"](function (error) {
-  return console.log(error);
+  return console.log(error.message);
 });
 
 var _default = db;

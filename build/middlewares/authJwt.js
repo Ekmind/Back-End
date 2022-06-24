@@ -9,8 +9,6 @@ exports.verifyToken = exports.requireAuth = exports.isModerator = exports.isAdmi
 
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
-var _config = _interopRequireDefault(require("../config"));
-
 var _handler = require("../errors/handler.error");
 
 var _Role = _interopRequireDefault(require("../models/Role"));
@@ -25,6 +23,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//Check If User Token Exist
 var verifyToken = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res, next) {
     var token, decoded, user, errors;
@@ -41,7 +40,7 @@ var verifyToken = /*#__PURE__*/function () {
             }
 
             return _context.abrupt("return", res.status(403).json({
-              message: 'No token was provided'
+              message: 'No token was provided (You are not logged in)'
             }));
 
           case 4:

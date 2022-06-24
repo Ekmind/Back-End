@@ -2,9 +2,11 @@
 
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
-var _User = _interopRequireDefault(require("../models/User"));
-
 var _handler = require("../errors/handler.error");
+
+var _Appointments = _interopRequireDefault(require("../models/Appointments"));
+
+var _Patient = _interopRequireDefault(require("../models/Patient"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -14,9 +16,10 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//Create Appointment
 module.exports.create_appointment = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
-    var _req$body, date, notes, newAppointment, user, errors;
+    var _req$body, date, notes, patient, newAppointment, addAppointment, errors;
 
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -25,49 +28,271 @@ module.exports.create_appointment = /*#__PURE__*/function () {
             _req$body = req.body, date = _req$body.date, notes = _req$body.notes;
             _context.prev = 1;
             _context.next = 4;
-            return _User["default"].updateOne({
-              "patients._id": req.params.patient_id
-            }, {
-              $push: {
-                "patients.$.appointments": [{
-                  date: date,
-                  notes: notes
-                }]
-              }
+            return _Patient["default"].findById({
+              _id: req.params.patient_id
             });
 
           case 4:
-            newAppointment = _context.sent;
-            _context.next = 7;
-            return _User["default"].findOne({
-              "patients._id": req.params.patient_id
+            patient = _context.sent;
+
+            if (!patient) {
+              _context.next = 22;
+              break;
+            }
+
+            _context.prev = 6;
+            _context.next = 9;
+            return _Appointments["default"].create({
+              date: date,
+              notes: notes,
+              patient: patient.id
             });
 
-          case 7:
-            user = _context.sent;
-            console.log(user);
+          case 9:
+            newAppointment = _context.sent;
+            _context.next = 12;
+            return _Patient["default"].findByIdAndUpdate({
+              _id: patient.id
+            }, {
+              $push: {
+                appointments: newAppointment._id
+              }
+            }, {
+              "new": true
+            });
+
+          case 12:
+            addAppointment = _context.sent;
+            console.log({
+              message: 'Appointment created successfully',
+              Appointment: newAppointment,
+              Patient: addAppointment
+            });
             res.status(200).json({
               message: 'Appointment created successfully',
               Appointment: newAppointment
             });
-            _context.next = 16;
+            _context.next = 22;
             break;
 
-          case 12:
-            _context.prev = 12;
-            _context.t0 = _context["catch"](1);
+          case 17:
+            _context.prev = 17;
+            _context.t0 = _context["catch"](6);
             errors = (0, _handler.handleErrors)(_context.t0);
-            console.log(errors);
+            console.log({
+              message: 'Appointment could not be created',
+              error: errors
+            });
+            res.status(400).json({
+              Error: 'Appointment could not be created'
+            });
 
-          case 16:
+          case 22:
+            _context.next = 29;
+            break;
+
+          case 24:
+            _context.prev = 24;
+            _context.t1 = _context["catch"](1);
+            (0, _handler.handleErrors)(_context.t1);
+            console.log({
+              message: 'Patient not found'
+            });
+            res.status(400).json({
+              Error: 'Patient not found'
+            });
+
+          case 29:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[1, 12]]);
+    }, _callee, null, [[1, 24], [6, 17]]);
   }));
 
   return function (_x, _x2) {
     return _ref.apply(this, arguments);
+  };
+}(); //Update Appointment
+
+
+module.exports.update_appointment = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
+    var _req$body2, date, notes, appointment, updatedAppointment, errors, _errors;
+
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _req$body2 = req.body, date = _req$body2.date, notes = _req$body2.notes;
+            _context2.prev = 1;
+            _context2.next = 4;
+            return _Appointments["default"].findById({
+              _id: req.params.appointment_id
+            });
+
+          case 4:
+            appointment = _context2.sent;
+
+            if (!appointment) {
+              _context2.next = 19;
+              break;
+            }
+
+            _context2.prev = 6;
+            _context2.next = 9;
+            return _Appointments["default"].findOneAndUpdate({
+              _id: appointment.id
+            }, {
+              date: date,
+              notes: notes
+            }, {
+              "new": true
+            });
+
+          case 9:
+            updatedAppointment = _context2.sent;
+            console.log('Appointment Updated:', updatedAppointment);
+            return _context2.abrupt("return", res.status(200).json({
+              message: 'Appointment updated',
+              appointment: updatedAppointment
+            }));
+
+          case 14:
+            _context2.prev = 14;
+            _context2.t0 = _context2["catch"](6);
+            errors = (0, _handler.handleErrors)(_context2.t0);
+            console.log({
+              message: 'Appointment could not be updated'
+            });
+            return _context2.abrupt("return", res.status(400).json('Error: Appointment could not be updated'));
+
+          case 19:
+            console.log('Patient does not exist');
+            res.status(400).json({
+              Error: 'Patient does not exist'
+            });
+            _context2.next = 28;
+            break;
+
+          case 23:
+            _context2.prev = 23;
+            _context2.t1 = _context2["catch"](1);
+            _errors = (0, _handler.handleErrors)(_context2.t1);
+            console.log({
+              message: 'Valid ObjectId missing'
+            });
+            res.status(400).json({
+              Error: 'Valid ObjectId missing'
+            });
+
+          case 28:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[1, 23], [6, 14]]);
+  }));
+
+  return function (_x3, _x4) {
+    return _ref2.apply(this, arguments);
+  };
+}(); //Delete Appointment
+
+
+module.exports.delete_appointment = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
+    var appointment, removeAppointment, deletedAppointment;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.prev = 0;
+            _context3.next = 3;
+            return _Appointments["default"].findById({
+              _id: req.params.appointment_id
+            });
+
+          case 3:
+            appointment = _context3.sent;
+
+            if (!appointment) {
+              _context3.next = 21;
+              break;
+            }
+
+            _context3.prev = 5;
+            _context3.next = 8;
+            return _Patient["default"].findOneAndUpdate({
+              _id: appointment.patient
+            }, {
+              $pull: {
+                appointments: appointment.id
+              }
+            }, {
+              "new": true
+            });
+
+          case 8:
+            removeAppointment = _context3.sent;
+            _context3.next = 11;
+            return _Appointments["default"].deleteOne({
+              _id: appointment.id
+            });
+
+          case 11:
+            deletedAppointment = _context3.sent;
+            console.log({
+              message: 'Appointment deleted',
+              Appointment: deletedAppointment,
+              Patient: removeAppointment
+            });
+            return _context3.abrupt("return", res.status(200).json({
+              message: 'Appointment deleted',
+              Appointment: deletedAppointment
+            }));
+
+          case 16:
+            _context3.prev = 16;
+            _context3.t0 = _context3["catch"](5);
+            (0, _handler.handleErrors)(_context3.t0);
+            console.log({
+              message: 'Appointment could not be deleted'
+            });
+            return _context3.abrupt("return", res.json({
+              Error: 'Appointment could not be deleted'
+            }));
+
+          case 21:
+            console.log({
+              message: 'Patient does not exist'
+            });
+            res.status(400).json({
+              Error: 'Patient does not exist'
+            });
+            _context3.next = 30;
+            break;
+
+          case 25:
+            _context3.prev = 25;
+            _context3.t1 = _context3["catch"](0);
+            (0, _handler.handleErrors)(_context3.t1);
+            console.log({
+              Error: 'Valid ObjectId missing'
+            });
+            res.json({
+              Error: 'Valid ObjectId missing'
+            });
+
+          case 30:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[0, 25], [5, 16]]);
+  }));
+
+  return function (_x5, _x6) {
+    return _ref3.apply(this, arguments);
   };
 }();

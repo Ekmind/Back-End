@@ -18,8 +18,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var jwt = require('jsonwebtoken');
 
-//1h
-var Time = 1000 * 60 * 60;
+//1h time in ms
+var Time = 1000 * 60 * 60; //Token creation function
 
 var createToken = function createToken(id) {
   return jwt.sign({
@@ -27,7 +27,8 @@ var createToken = function createToken(id) {
   }, process.env.JWT_SECRET, {
     expiresIn: "3h"
   });
-};
+}; //Sign Up (User Registration)
+
 
 module.exports.signup_post = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
@@ -58,37 +59,39 @@ module.exports.signup_post = /*#__PURE__*/function () {
           case 7:
             user = _context.sent;
             token = createToken(user._id);
+            console.log(user);
             res.cookie('jwt', token, {
-              httpOnly: true,
-              maxAge: Time
+              maxAge: Time,
+              httpOnly: true
             });
             res.status(201).json({
               user: user,
               token: token
             });
-            _context.next = 17;
+            _context.next = 18;
             break;
 
-          case 13:
-            _context.prev = 13;
+          case 14:
+            _context.prev = 14;
             _context.t0 = _context["catch"](1);
             errors = (0, _handler.handleErrors)(_context.t0);
             res.status(400).json({
               errors: errors
             });
 
-          case 17:
+          case 18:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[1, 13]]);
+    }, _callee, null, [[1, 14]]);
   }));
 
   return function (_x, _x2) {
     return _ref.apply(this, arguments);
   };
-}();
+}(); //Log In (User Authentication)
+
 
 module.exports.login_post = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
@@ -106,61 +109,147 @@ module.exports.login_post = /*#__PURE__*/function () {
           case 4:
             user = _context2.sent;
             token = createToken(user._id);
+            console.log('User logged in');
             res.cookie('jwt', token, {
               httpOnly: true,
               maxAge: Time
             });
             res.status(200).json({
+              message: 'User was logged in successfully',
               user: user,
               token: token
             });
-            _context2.next = 14;
+            _context2.next = 15;
             break;
 
-          case 10:
-            _context2.prev = 10;
+          case 11:
+            _context2.prev = 11;
             _context2.t0 = _context2["catch"](1);
             errors = (0, _handler.handleErrors)(_context2.t0);
             res.status(400).json({
               errors: errors
             });
 
-          case 14:
+          case 15:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[1, 10]]);
+    }, _callee2, null, [[1, 11]]);
   }));
 
   return function (_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
-}();
+}(); //Get Logged User (User Credentials And Token)
 
-module.exports.logout_get = /*#__PURE__*/function () {
+
+module.exports.login_get = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var token;
+    var token, decoded, userId, user, errors;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             token = req.cookies['jwt'];
-            console.log('Token:', token);
-            res.cookie('jwt', '', {
-              maxAge: 1
+            _context3.prev = 1;
+            decoded = jwt.verify(token, process.env.JWT_SECRET);
+            userId = decoded.id;
+            _context3.next = 6;
+            return _User["default"].findById({
+              _id: userId
             });
-            res.status(200).json('User was logged out successfully');
 
-          case 4:
+          case 6:
+            user = _context3.sent;
+            console.log({
+              user: user,
+              token: token
+            });
+            res.status(200).json({
+              message: 'User is logged in',
+              user: user,
+              token: token
+            });
+            _context3.next = 15;
+            break;
+
+          case 11:
+            _context3.prev = 11;
+            _context3.t0 = _context3["catch"](1);
+            errors = (0, _handler.handleErrors)(_context3.t0);
+            console.log(errors);
+
+          case 15:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3);
+    }, _callee3, null, [[1, 11]]);
   }));
 
   return function (_x5, _x6) {
     return _ref3.apply(this, arguments);
+  };
+}(); //Log Out (End User Session)
+
+
+module.exports.logout_get = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
+    var token, errors;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            token = req.cookies['jwt'];
+
+            try {
+              res.cookie('jwt', '', {
+                maxAge: 1
+              });
+              console.log('Token:', token);
+              res.status(200).json('User was logged out successfully');
+            } catch (err) {
+              errors = (0, _handler.handleErrors)(err);
+              console.log(errors);
+            }
+
+          case 2:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4);
+  }));
+
+  return function (_x7, _x8) {
+    return _ref4.apply(this, arguments);
+  };
+}(); //User Update (Modify User Credentials)
+
+
+module.exports.user_update = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+    var _req$body3, name, last_name, email, password, updatedUser;
+
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _req$body3 = req.body, name = _req$body3.name, last_name = _req$body3.last_name, email = _req$body3.email, password = _req$body3.password;
+            updatedUser = _User["default"].findOneAndUpdate({
+              _id: req.userId
+            }, {});
+
+          case 2:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5);
+  }));
+
+  return function (_x9, _x10) {
+    return _ref5.apply(this, arguments);
   };
 }();
