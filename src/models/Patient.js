@@ -11,6 +11,7 @@ const patientSchema = new mongoose.Schema({
     phone: Number,
     email: String,
     doctor: mongoose.Types.ObjectId,
+    isActive: Boolean,
     appointments: {
         ref: 'Appointment',
         type: mongoose.Types.ObjectId

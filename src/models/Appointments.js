@@ -5,6 +5,7 @@ const appointmentSchema = new mongoose.Schema(
         date: Date,
         notes: String,
         patient: mongoose.Types.ObjectId,
+        completed: Boolean,
         emotional_data: [{
             angry: Number,
             disgust: Number,

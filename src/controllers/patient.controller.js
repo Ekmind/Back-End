@@ -4,37 +4,48 @@ import Patient from "../models/Patient";
 
 //Create Patient
 module.exports.create_patient = async (req, res) => {
-    const doctor = await User.findById({ _id: req.userId });
-
     const { name, last_name, age, gender, image, phone, email } = await req.body
-    const patient = {
-        name: name,
-        last_name: last_name,
-        age: age,
-        gender: gender,
-        image: image,
-        phone: phone,
-        email: email,
-        doctor: doctor._id
-    }
 
     try {
-        const newPatient = await Patient.create(patient);
+        const doctor = await User.findById({ _id: req.userId });
+        const patient = {
+            name: name,
+            last_name: last_name,
+            age: age,
+            gender: gender,
+            image: image,
+            phone: phone,
+            email: email,
+            doctor: doctor._id
+        };
 
-        const updateDoctor = await User.updateOne(
-            { _id: req.userId },
-            {
-                $push: { patients: newPatient._id }
+        if (doctor) {
+            try {
+                const newPatient = await Patient.create(patient);
+
+                const updateDoctor = await User.findByIdAndUpdate(
+                    { _id: doctor._id },
+                    {
+                        $push: { patients: newPatient._id }
+                    }
+                );
+
+                console.log(updateDoctor)
+
+                res.status(200).json({ message: 'Patient created', patient: newPatient })
+            } catch (err) {
+                handleErrors(err);
+                console.log({ Error: 'Patient could not be created' });
+                res.json({ Error: 'Patient could not be created' });
             }
-        );
 
-        console.log(updateDoctor)
-
-        res.status(200).json({ message: 'Patient created', patients: newPatient })
+        }
     } catch (err) {
-        const errors = handleErrors(err);
-        console.log({ errors });
+        handleErrors(err);
+        console.log({ Error: 'Valid ObjectId missing' });
+        res.json({ Error: 'Valid ObjectId missing' })
     }
+
 }
 
 //Update Patient Credentials
@@ -44,7 +55,7 @@ module.exports.update_patient = async (req, res) => {
         const patient = await Patient.findById({ _id: req.params.patient_id });
         if (patient) {
             try {
-                const updatedPatient = await Patient.updateOne(
+                const updatedPatient = await Patient.findByIdAndUpdate(
                     { _id: patient.id },
                     {
                         name: name,
@@ -54,10 +65,11 @@ module.exports.update_patient = async (req, res) => {
                         image: image,
                         phone: phone,
                         email: email
-                    }
+                    },
+                    { new: true }
                 );
 
-                res.status(200).json({ message: 'Patient updated', patients: updatedPatient })
+                res.status(200).json({ message: 'Patient updated', patient: updatedPatient });
             } catch (err) {
                 const errors = handleErrors(err);
                 console.log({ message: 'Patient could not be updated' });
@@ -65,51 +77,56 @@ module.exports.update_patient = async (req, res) => {
             }
         }
     } catch (err) {
-
+        handleErrors(err);
+        console.log({ Error: 'Valid ObjectId missing' });
+        res.json({ Error: 'Valid ObjectId missing' });
     }
 }
 
 //Delete Patient
 module.exports.delete_patient = async (req, res) => {
-    const patient = req.params.patient_id;
+
     try {
+        const patient = await Patient.findById({ _id: req.params.patient_id });
 
-        console.log('user id:', req.userId, 'patient id:', req.params.patient_id)
+        if (patient) {
+            try {
+                const removePatient = await User.findByIdAndUpdate(
+                    { _id: patient.doctor },
+                    {
+                        $pull: { patients: patient._id }
+                    },
+                    { new: true }
+                );
 
-        const removePatient = await User.findOneAndUpdate(
-            { ObjectId: patient },
-            {
-                $pull: { patients: patient }
-            },
-            { new: true }
-        );
-        console.log('User patient:', removePatient);
-
-        const deletedPatient = await Patient.deleteOne({ _id: req.params.patient_id });
-        res.status(200).json({ message: 'Patient deleted', deletedPatient });
+                const deletedPatient = await Patient.deleteOne({ _id: patient._id });
+                console.log({ message: 'User patient:', patient: deletedPatient, doctor: removePatient });
+                res.status(200).json({ message: 'Patient deleted', patient: deletedPatient, doctor: removePatient });
+            } catch (err) {
+                handleErrors(err);
+                console.log({ Error: 'Patient could not be deleted' });
+                res.json({ Error: 'Patient could not be deleted' });
+            }
+        }
     } catch (err) {
-        const errors = handleErrors(err);
-        console.log({ errors });
+        handleErrors(err);
+        console.log({ Error: 'Valid ObjectId missing' });
+        res.json({ Error: 'Valid ObjectId missing' });
     }
+
+
 }
 
 //Get A Patient Within A User 
 module.exports.get_patient = async (req, res) => {
-    const patient = req.params.patient_id;
     try {
-        const getPatient = await User.findOne(
-            { ObjectId: patient },
-            {
-                patients: { ObjectId: patient }
-            }
-
-        ).populate('patients');
+        const getPatient = await Patient.findById({ _id: req.params.patient_id });
 
         console.log(getPatient);
         res.status(200).json({ message: 'Patient found!', patient: getPatient });
     } catch (err) {
-        const errors = handleErrors(err);
-        console.log(errors);
+        handleErrors(err);
+        console.log({ Error: 'Patient not found!' });
         res.status(400).json('Patient not found!');
     }
 }
@@ -124,8 +141,8 @@ module.exports.get_all_patients = async (req, res) => {
         console.log(getAllPatients);
         res.status(200).json(getAllPatients.patients);
     } catch (err) {
-        const errors = handleErrors(err);
-        console.log(errors);
+        handleErrors(err);
+        console.log({ Error: 'No patients found!' });
         res.status(400).json('No patients found!');
     }
 }

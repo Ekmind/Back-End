@@ -45,6 +45,7 @@ const userSchema = new mongoose.Schema({
         ref: "Role",
         type: mongoose.Schema.Types.ObjectId
     }],
+    isActive: Boolean,
     patients: [{
         ref: "Patient",
         type: mongoose.Schema.Types.ObjectId

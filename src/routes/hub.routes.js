@@ -28,5 +28,6 @@ router.get('/get/all/patients/:userId', authJwt.verifyToken, patientCtrl.get_all
 //Appointment Management
 router.post('/create/appointment/:patient_id', authJwt.verifyToken, appointmentCtrl.create_appointment);
 router.patch('/update/appointment/:appointment_id', authJwt.verifyToken, appointmentCtrl.update_appointment);
+router.delete('/delete/appointment/:appointment_id', authJwt.verifyToken, appointmentCtrl.delete_appointment);
 
 export default router;
