@@ -28,7 +28,7 @@ app.use((0, _morgan["default"])('dev'));
 app.use(_express["default"].json());
 app.use(CORS());
 app.use(cookieParser());
-app.get('/test', function (req, res) {
+app.get('/', function (req, res) {
   res.json({
     author: app.get('pkg').author,
     name: "Ekmind API"
