@@ -76,7 +76,7 @@ module.exports.delete_appointment = async (req, res) => {
                 const removeAppointment = await Patient.findOneAndUpdate(
                     { _id: appointment.patient },
                     {
-                        $pull: { appointments: appointment.id }
+                        $pull: { appointments: appointment._id }
                     },
                     { new: true }
                 );
@@ -100,3 +100,5 @@ module.exports.delete_appointment = async (req, res) => {
         res.json({ Error: 'Valid ObjectId missing' });
     }
 }
+
+//Deactivate Appointment

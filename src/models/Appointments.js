@@ -5,7 +5,10 @@ const appointmentSchema = new mongoose.Schema(
         date: Date,
         notes: String,
         patient: mongoose.Types.ObjectId,
-        completed: Boolean,
+        completed: {
+            type: Boolean,
+            default: false
+        },
         emotional_data: [{
             angry: Number,
             disgust: Number,
