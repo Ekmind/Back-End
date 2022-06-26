@@ -70,7 +70,10 @@ var userSchema = new mongoose.Schema({
     ref: "Role",
     type: mongoose.Schema.Types.ObjectId
   }],
-  isActive: Boolean,
+  isActive: {
+    type: Boolean,
+    "default": true
+  },
   patients: [{
     ref: "Patient",
     type: mongoose.Schema.Types.ObjectId

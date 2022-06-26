@@ -227,7 +227,7 @@ module.exports.delete_appointment = /*#__PURE__*/function () {
               _id: appointment.patient
             }, {
               $pull: {
-                appointments: appointment.id
+                appointments: appointment._id
               }
             }, {
               "new": true
@@ -295,4 +295,4 @@ module.exports.delete_appointment = /*#__PURE__*/function () {
   return function (_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
-}();
+}(); //Deactivate Appointment

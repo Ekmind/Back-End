@@ -19,7 +19,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //Create Patient
 module.exports.create_patient = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
-    var _yield$req$body, name, last_name, age, gender, image, phone, email, doctor, patient, newPatient, updateDoctor;
+    var _yield$req$body, name, last_name, age, gender, image, phone, email, doctor, patient, newPatient, updatedDoctor;
 
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -74,17 +74,22 @@ module.exports.create_patient = /*#__PURE__*/function () {
               $push: {
                 patients: newPatient._id
               }
+            }, {
+              "new": true
             });
 
           case 22:
-            updateDoctor = _context.sent;
-            console.log(updateDoctor);
-            res.status(200).json({
+            updatedDoctor = _context.sent;
+            console.log({
               message: 'Patient created',
-              patient: newPatient
+              patient: newPatient,
+              doctor: updatedDoctor.patients
             });
-            _context.next = 32;
-            break;
+            return _context.abrupt("return", res.status(200).json({
+              message: 'Patient created',
+              patient: newPatient,
+              doctor: updatedDoctor.patients
+            }));
 
           case 27:
             _context.prev = 27;
@@ -93,16 +98,22 @@ module.exports.create_patient = /*#__PURE__*/function () {
             console.log({
               Error: 'Patient could not be created'
             });
-            res.json({
+            return _context.abrupt("return", res.json({
               Error: 'Patient could not be created'
-            });
+            }));
 
           case 32:
-            _context.next = 39;
+            console.log({
+              message: 'Doctor not found'
+            });
+            res.status(404).json({
+              message: 'Doctor not found'
+            });
+            _context.next = 41;
             break;
 
-          case 34:
-            _context.prev = 34;
+          case 36:
+            _context.prev = 36;
             _context.t1 = _context["catch"](10);
             (0, _handler.handleErrors)(_context.t1);
             console.log({
@@ -112,12 +123,12 @@ module.exports.create_patient = /*#__PURE__*/function () {
               Error: 'Valid ObjectId missing'
             });
 
-          case 39:
+          case 41:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[10, 34], [16, 27]]);
+    }, _callee, null, [[10, 36], [16, 27]]);
   }));
 
   return function (_x, _x2) {
@@ -128,7 +139,7 @@ module.exports.create_patient = /*#__PURE__*/function () {
 
 module.exports.update_patient = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-    var _req$body, name, last_name, age, gender, image, phone, email, patient, updatedPatient, errors;
+    var _req$body, name, last_name, age, gender, image, phone, email, patient, updatedPatient;
 
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
@@ -145,7 +156,7 @@ module.exports.update_patient = /*#__PURE__*/function () {
             patient = _context2.sent;
 
             if (!patient) {
-              _context2.next = 18;
+              _context2.next = 19;
               break;
             }
 
@@ -167,30 +178,38 @@ module.exports.update_patient = /*#__PURE__*/function () {
 
           case 9:
             updatedPatient = _context2.sent;
-            res.status(200).json({
+            console.log({
               message: 'Patient updated',
               patient: updatedPatient
             });
-            _context2.next = 18;
-            break;
+            return _context2.abrupt("return", res.status(200).json({
+              message: 'Patient updated',
+              patient: updatedPatient
+            }));
 
-          case 13:
-            _context2.prev = 13;
+          case 14:
+            _context2.prev = 14;
             _context2.t0 = _context2["catch"](6);
-            errors = (0, _handler.handleErrors)(_context2.t0);
+            (0, _handler.handleErrors)(_context2.t0);
             console.log({
               message: 'Patient could not be updated'
             });
-            res.json({
+            return _context2.abrupt("return", res.json({
               Error: 'Patient could not be updated'
-            });
+            }));
 
-          case 18:
-            _context2.next = 25;
+          case 19:
+            console.log({
+              message: 'Patient not found'
+            });
+            res.status(404).json({
+              message: 'Patient not found'
+            });
+            _context2.next = 28;
             break;
 
-          case 20:
-            _context2.prev = 20;
+          case 23:
+            _context2.prev = 23;
             _context2.t1 = _context2["catch"](1);
             (0, _handler.handleErrors)(_context2.t1);
             console.log({
@@ -200,12 +219,12 @@ module.exports.update_patient = /*#__PURE__*/function () {
               Error: 'Valid ObjectId missing'
             });
 
-          case 25:
+          case 28:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[1, 20], [6, 13]]);
+    }, _callee2, null, [[1, 23], [6, 14]]);
   }));
 
   return function (_x3, _x4) {
@@ -241,7 +260,9 @@ module.exports.delete_patient = /*#__PURE__*/function () {
               _id: patient.doctor
             }, {
               $pull: {
-                patients: patient._id
+                patients: {
+                  _id: patient._id
+                }
               }
             }, {
               "new": true
@@ -257,17 +278,15 @@ module.exports.delete_patient = /*#__PURE__*/function () {
           case 11:
             deletedPatient = _context3.sent;
             console.log({
-              message: 'User patient:',
-              patient: deletedPatient,
-              doctor: removePatient
-            });
-            res.status(200).json({
               message: 'Patient deleted',
               patient: deletedPatient,
-              doctor: removePatient
+              doctor: removePatient.patients
             });
-            _context3.next = 21;
-            break;
+            return _context3.abrupt("return", res.status(200).json({
+              message: 'Patient deleted',
+              patient: deletedPatient,
+              doctor: removePatient.patients
+            }));
 
           case 16:
             _context3.prev = 16;
@@ -276,16 +295,22 @@ module.exports.delete_patient = /*#__PURE__*/function () {
             console.log({
               Error: 'Patient could not be deleted'
             });
-            res.json({
+            return _context3.abrupt("return", res.json({
               Error: 'Patient could not be deleted'
-            });
+            }));
 
           case 21:
-            _context3.next = 28;
+            console.log({
+              message: 'Patient not found'
+            });
+            res.status(404).json({
+              message: 'Patient not found'
+            });
+            _context3.next = 30;
             break;
 
-          case 23:
-            _context3.prev = 23;
+          case 25:
+            _context3.prev = 25;
             _context3.t1 = _context3["catch"](0);
             (0, _handler.handleErrors)(_context3.t1);
             console.log({
@@ -295,12 +320,12 @@ module.exports.delete_patient = /*#__PURE__*/function () {
               Error: 'Valid ObjectId missing'
             });
 
-          case 28:
+          case 30:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 23], [5, 16]]);
+    }, _callee3, null, [[0, 25], [5, 16]]);
   }));
 
   return function (_x5, _x6) {
@@ -394,5 +419,215 @@ module.exports.get_all_patients = /*#__PURE__*/function () {
 
   return function (_x9, _x10) {
     return _ref5.apply(this, arguments);
+  };
+}(); //Deactivate Patient
+
+
+module.exports.deactivate_patient = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
+    var patient, deactivatedPatient, updatedDoctor;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.prev = 0;
+            _context6.next = 3;
+            return _Patient["default"].findById({
+              _id: req.params.patient_id
+            });
+
+          case 3:
+            patient = _context6.sent;
+
+            if (!patient) {
+              _context6.next = 21;
+              break;
+            }
+
+            _context6.prev = 5;
+            _context6.next = 8;
+            return _Patient["default"].findByIdAndUpdate({
+              _id: patient._id
+            }, {
+              $set: {
+                isActive: false
+              }
+            }, {
+              "new": true
+            });
+
+          case 8:
+            deactivatedPatient = _context6.sent;
+            _context6.next = 11;
+            return _User["default"].findByIdAndUpdate({
+              _id: patient.doctor
+            }, {
+              $pull: {
+                patients: patient._id
+              }
+            }, {
+              "new": true
+            });
+
+          case 11:
+            updatedDoctor = _context6.sent;
+            console.log({
+              message: 'Patient deactivated',
+              patient_isActive: deactivatedPatient.isActive,
+              doctor_patients: updatedDoctor.patients
+            });
+            return _context6.abrupt("return", res.status(200).json({
+              message: 'Patient deactivated',
+              patient_isActive: deactivatedPatient.isActive,
+              doctor_patients: updatedDoctor.patients
+            }));
+
+          case 16:
+            _context6.prev = 16;
+            _context6.t0 = _context6["catch"](5);
+            (0, _handler.handleErrors)(_context6.t0);
+            console.log({
+              Error: 'Patient could not be deactivated'
+            });
+            return _context6.abrupt("return", res.json({
+              Error: 'Patient could not be updated'
+            }));
+
+          case 21:
+            console.log({
+              message: 'Patient not found'
+            });
+            res.json({
+              message: 'Patient not found'
+            });
+            _context6.next = 30;
+            break;
+
+          case 25:
+            _context6.prev = 25;
+            _context6.t1 = _context6["catch"](0);
+            (0, _handler.handleErrors)(_context6.t1);
+            console.log({
+              Error: 'Valid ObjectId missing'
+            });
+            res.json({
+              Error: 'Valid ObjectId missing'
+            });
+
+          case 30:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6, null, [[0, 25], [5, 16]]);
+  }));
+
+  return function (_x11, _x12) {
+    return _ref6.apply(this, arguments);
+  };
+}(); //Reactivate Patient
+
+
+module.exports.reactivate_patient = /*#__PURE__*/function () {
+  var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
+    var patient, reactivatedPatient, updatedDoctor;
+    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            _context7.prev = 0;
+            _context7.next = 3;
+            return _Patient["default"].findById({
+              _id: req.params.patient_id
+            });
+
+          case 3:
+            patient = _context7.sent;
+
+            if (!patient) {
+              _context7.next = 21;
+              break;
+            }
+
+            _context7.prev = 5;
+            _context7.next = 8;
+            return _Patient["default"].findByIdAndUpdate({
+              _id: patient._id
+            }, {
+              $set: {
+                isActive: true
+              }
+            }, {
+              "new": true
+            });
+
+          case 8:
+            reactivatedPatient = _context7.sent;
+            _context7.next = 11;
+            return _User["default"].findByIdAndUpdate({
+              _id: patient.doctor
+            }, {
+              $push: {
+                patients: patient._id
+              }
+            }, {
+              "new": true
+            });
+
+          case 11:
+            updatedDoctor = _context7.sent;
+            console.log({
+              message: 'Patient was reactivated',
+              patient_isActive: reactivatedPatient.isActive,
+              doctor_patients: updatedDoctor.patients
+            });
+            return _context7.abrupt("return", res.status(200).json({
+              message: 'Patient was reactivated',
+              patient_isActive: reactivatedPatient.isActive,
+              doctor_patients: updatedDoctor.patients
+            }));
+
+          case 16:
+            _context7.prev = 16;
+            _context7.t0 = _context7["catch"](5);
+            (0, _handler.handleErrors)(_context7.t0);
+            console.log({
+              Error: 'Patient could not be reactivated'
+            });
+            return _context7.abrupt("return", res.json({
+              Error: 'Patient could not be reactivated'
+            }));
+
+          case 21:
+            console.log({
+              message: 'Patient not found'
+            });
+            res.status(404).json({
+              message: 'Patient not found'
+            });
+            _context7.next = 30;
+            break;
+
+          case 25:
+            _context7.prev = 25;
+            _context7.t1 = _context7["catch"](0);
+            (0, _handler.handleErrors)(_context7.t1);
+            console.log({
+              Error: 'Valid ObjectId missing'
+            });
+            res.json({
+              Error: 'Valid ObjectId missing'
+            });
+
+          case 30:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7, null, [[0, 25], [5, 16]]);
+  }));
+
+  return function (_x13, _x14) {
+    return _ref7.apply(this, arguments);
   };
 }();

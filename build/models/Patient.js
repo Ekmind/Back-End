@@ -22,7 +22,10 @@ var patientSchema = new mongoose.Schema({
   phone: Number,
   email: String,
   doctor: mongoose.Types.ObjectId,
-  isActive: Boolean,
+  isActive: {
+    type: Boolean,
+    "default": true
+  },
   appointments: {
     ref: 'Appointment',
     type: mongoose.Types.ObjectId
