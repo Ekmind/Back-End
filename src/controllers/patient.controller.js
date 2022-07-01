@@ -109,7 +109,7 @@ module.exports.delete_patient = async (req, res) => {
 				const removePatient = await User.findByIdAndUpdate(
 					{ _id: patient.doctor },
 					{
-						$pull: { patients: { _id: patient._id } }
+						$pull: { patients: patient._id }
 					},
 					{ new: true }
 				);
@@ -137,8 +137,6 @@ module.exports.delete_patient = async (req, res) => {
 		res.json({ Error: 'Valid ObjectId missing' });
 
 	}
-
-
 }
 
 //Get A Patient Within A User 
@@ -148,10 +146,13 @@ module.exports.get_patient = async (req, res) => {
 
 		console.log(getPatient);
 		res.status(200).json({ message: 'Patient found!', patient: getPatient });
+
 	} catch (err) {
+
 		handleErrors(err);
 		console.log({ Error: 'Patient not found!' });
 		res.status(400).json('Patient not found!');
+
 	}
 }
 
@@ -164,10 +165,13 @@ module.exports.get_all_patients = async (req, res) => {
 
 		console.log(getAllPatients);
 		res.status(200).json(getAllPatients.patients);
+
 	} catch (err) {
+
 		handleErrors(err);
 		console.log({ Error: 'No patients found!' });
 		res.status(400).json('No patients found!');
+
 	}
 }
 
@@ -183,7 +187,7 @@ module.exports.deactivate_patient = async (req, res) => {
 						$set: { isActive: false }
 					},
 					{ new: true }
-				)
+				);
 
 				const updatedDoctor = await User.findByIdAndUpdate(
 					{ _id: patient.doctor },
@@ -191,7 +195,7 @@ module.exports.deactivate_patient = async (req, res) => {
 						$pull: { patients: patient._id }
 					},
 					{ new: true }
-				)
+				);
 
 				console.log({ message: 'Patient deactivated', patient_isActive: deactivatedPatient.isActive, doctor_patients: updatedDoctor.patients });
 				return res.status(200).json({ message: 'Patient deactivated', patient_isActive: deactivatedPatient.isActive, doctor_patients: updatedDoctor.patients });

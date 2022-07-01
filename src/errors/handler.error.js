@@ -1,10 +1,21 @@
+const fs = require('fs');
+const path = 'src/errors/logs/errors.json';
 export const handleErrors = (err) => {
+    const message = [{ error: err.message, code: err.code },];
+    const value = (data) => { return JSON.stringify(data, null, 2); }
     let errors = {
         name: "",
         last_name: "",
         email: "",
         password: ""
     };
+
+    const saveLogs = (path, value, error) => {
+        fs.writeFile(path, value, (error) => {
+            if (error) return console.log({ error_logs: error.message });
+            console.log({ error_logs: 'Error log saved' });
+        });
+    }
 
     //Jwt expired
     if (err.message.includes('jwt expired')) {
@@ -30,11 +41,15 @@ export const handleErrors = (err) => {
     //Credentials error(s)
     if (err.message.includes('user validation failed')) {
         Object.values(err.errors).forEach(error => {
-            // console.log(error.message)
             errors[error.path] = error.message;
         });
 
+
+
+        saveLogs(path, value({ errors: errors }));
+        return errors
     }
-    console.log({ error: err.message, code: err.code });
+    console.log(message);
+    saveLogs(path, value({ message },));
     return errors;
 }

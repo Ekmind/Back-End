@@ -28,7 +28,8 @@ module.exports.signup_post = async (req, res) => {
         res.status(201).json({ user: user, token: token });
     } catch (err) {
         const errors = handleErrors(err);
-        res.status(400).json({ errors });
+        console.log({ message: 'User could not be register', errors: errors })
+        res.status(400).json({ message: 'User could not be register' });
     }
 }
 
@@ -45,8 +46,9 @@ module.exports.login_post = async (req, res) => {
         res.status(200).json({ message: 'User was logged in successfully', user: user, token: token });
 
     } catch (err) {
-        const errors = handleErrors(err)
-        res.status(400).json({ errors })
+        const errors = handleErrors(err);
+        console.log({ message: 'User can not be logged in', errors: errors });
+        res.status(400).json({ Error: 'User can not be logged in' });
     }
 }
 
@@ -59,10 +61,13 @@ module.exports.login_get = async (req, res) => {
         const user = await User.findById({ _id: userId });
 
         console.log({ user: user, token: token });
-        res.status(200).json({ message: 'User is logged in', user: user, token: token })
+        res.status(200).json({ message: 'User is logged in', user: user, token: token });
     } catch (err) {
-        const errors = handleErrors(err);
-        console.log(errors);
+
+        handleErrors(err);
+        console.log({ Error: 'Can not bring user credentials' });
+        res.json({ Error: 'Can not bring user credentials' });
+
     }
 }
 
@@ -75,10 +80,12 @@ module.exports.logout_get = async (req, res) => {
         res.status(200).json('User was logged out successfully');
 
     } catch (err) {
-        const errors = handleErrors(err);
-        console.log(errors)
-    }
 
+        handleErrors(err);
+        console.log({ Error: 'User can not be logged out' });
+        res.json({ Error: 'User can not be logged out' });
+
+    }
 }
 
 //User Update (Modify User Credentials)

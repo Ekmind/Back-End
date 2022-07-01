@@ -101,4 +101,147 @@ module.exports.delete_appointment = async (req, res) => {
     }
 }
 
-//Deactivate Appointment
+//Set Appointment as Completed
+module.exports.set_as_completed = async (req, res) => {
+    try {
+        const appointment = await Appointment.findById({ _id: req.params.appointment_id });
+        if (appointment) {
+            try {
+                const completed = await Appointment.findByIdAndUpdate(
+                    { _id: appointment._id },
+                    {
+                        $set: { pending: false }
+                    },
+                    { new: true }
+                );
+
+                const completedPatient = await Patient.findByIdAndUpdate(
+                    { _id: appointment.patient },
+                    {
+                        $pull: { appointments: appointment._id }
+                    },
+                    { new: true }
+                );
+
+                console.log({ message: 'Appointment completed', pending: completed.pending });
+                return res.status(200).json({ message: 'Appointment completed', pending: completed.pending });
+
+            } catch (err) {
+
+                handleErrors(err);
+                console.log({ Error: 'Appointment could not be set as completed' });
+                return res.json({ Error: 'Appointment could not be set as completed' });
+
+            }
+        }
+
+        console.log({ message: 'Appointment not found' });
+        res.status(404).json({ message: 'Appointment not found' });
+
+    } catch (err) {
+
+        handleErrors(err);
+        console.log({ Error: 'Valid ObjectId missing' });
+        res.json({ Error: 'Valid ObjectId missing' });
+
+    }
+}
+
+//Set to pending
+module.exports.set_to_pending = async (req, res) => {
+    try {
+        const appointment = await Appointment.findById({ _id: req.params.appointment_id });
+        const patient = await Patient.findById({ _id: appointment.patient });
+        if (appointment) {
+            try {
+                const pending = await Appointment.findByIdAndUpdate(
+                    { _id: appointment._id },
+                    {
+                        $set: { pending: true }
+                    },
+                    { new: true }
+                );
+
+                const pendingPatient = await Patient.findByIdAndUpdate(
+                    { _id: appointment.patient },
+                    {
+                        $push: { appointments: appointment._id }
+                    },
+                    { new: true }
+                );
+
+                pendingPatient.save();
+
+                console.log({ message: 'Appointment pending', pending: pending.pending });
+                return res.status(200).json({ message: 'Appointment pending', pending: pending.pending });
+
+            } catch (err) {
+
+                handleErrors(err);
+                console.log({ Error: 'Appointment could not be set to pending' });
+                return res.json({ Error: 'Appointment could not be set to pending' });
+
+            }
+        }
+
+        console.log({ message: 'Appointment not found' });
+        res.status(404).json({ message: 'Appointment not found' });
+
+    } catch (err) {
+
+        handleErrors(err);
+        console.log({ Error: 'Valid ObjectId missing' });
+        res.json({ Error: 'Valid ObjectId missing' });
+
+    }
+}
+
+//Insert Emotional Data
+module.exports.insert_data = async (req, res) => {
+    const { angry, disgust, fear, happy, neutral, sad, surprise } = req.body;
+    try {
+        const appointment = await Appointment.findById({ _id: req.params.appointment_id });
+        if (appointment) {
+            try {
+                const insert = await Appointment.findByIdAndUpdate(
+                    { _id: appointment._id },
+                    {
+                        $push: {
+                            emotional_data: {
+                                angry: angry,
+                                disgust: disgust,
+                                fear: fear,
+                                happy: happy,
+                                neutral: neutral,
+                                sad: sad,
+                                surprise: surprise
+                            }
+                        }
+                    },
+                    { new: true }
+                );
+
+                console.log({ message: 'Emotional data inserted', appointment: insert.emotional_data });
+                return res.json({ message: 'Emotional data inserted', appointment: insert.emotional_data });
+
+            } catch (err) {
+
+                handleErrors(err);
+                console.log({ Error: 'Data could not be inserted' });
+                res.json({ Error: 'Data could not be inserted' });
+
+            }
+
+        }
+
+        console.log({ Error: 'Appointment not found' });
+        res.status(404).json({ Error: 'Appointment not found' });
+
+    } catch (err) {
+
+        handleErrors(err);
+        console.log({ Error: 'Valid ObjectId missing' });
+        res.json({ Error: 'Valid ObjectId missing' });
+
+    }
+}

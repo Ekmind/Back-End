@@ -1,0 +1,8 @@
+{
+  "errors": {
+    "name": "",
+    "last_name": "",
+    "email": "Please enter a valid email",
+    "password": ""
+  }
+}

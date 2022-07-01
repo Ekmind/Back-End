@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-import Appointment from "./Appointments";
-import User from "./User";
 
 const patientSchema = new mongoose.Schema({
     name: String,
@@ -12,15 +10,15 @@ const patientSchema = new mongoose.Schema({
     email: String,
     doctor: mongoose.Types.ObjectId,
     isActive: { type: Boolean, default: true },
-    appointments: {
+    appointments: [{
         ref: 'Appointment',
-        type: mongoose.Types.ObjectId
-    }
+        type: mongoose.Types.ObjectId,
+        unique: true,
+    }]
 }, {
     timestamps: true,
     versionKey: false
 });
-
 
 // patientSchema.pre('deleteOne', async function (next) {
 //     const remove = await User.findOne(
@@ -33,4 +31,4 @@ const patientSchema = new mongoose.Schema({
 
 const Patient = mongoose.model('Patient', patientSchema);
 
-export default Patient
+export default Patient;

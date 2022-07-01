@@ -16,11 +16,10 @@ export const verifyToken = async (req, res, next) => {
 
         const user = await User.findById(req.userId, { password: 0 });
         if (!user) return res.status(404).json({ message: 'No user found' });
-        // console.log('Token owner: ' + user)
         next();
     } catch (error) {
-        const errors = handleErrors(error)
-        console.log(errors)
+        handleErrors(error)
+        console.log({ message: 'Unauthorized' })
         return res.status(401).json({ message: 'Unauthorized' });
     }
 };
@@ -32,7 +31,7 @@ export const requireAuth = (res, req, next) => {
         jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
             if (err) {
                 console.log(err.message);
-                res.status(403).json('Unauthorized')
+                res.status(403).json('Unauthorized');
             } else {
                 console.log(decodedToken);
                 next();
