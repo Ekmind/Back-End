@@ -260,9 +260,7 @@ module.exports.delete_patient = /*#__PURE__*/function () {
               _id: patient.doctor
             }, {
               $pull: {
-                patients: {
-                  _id: patient._id
-                }
+                patients: patient._id
               }
             }, {
               "new": true
@@ -364,7 +362,7 @@ module.exports.get_patient = /*#__PURE__*/function () {
             console.log({
               Error: 'Patient not found!'
             });
-            res.status(400).json('Patient not found!');
+            res.status(404).json('Patient not found!');
 
           case 13:
           case "end":
@@ -395,8 +393,14 @@ module.exports.get_all_patients = /*#__PURE__*/function () {
 
           case 3:
             getAllPatients = _context5.sent;
-            console.log(getAllPatients);
-            res.status(200).json(getAllPatients.patients);
+            console.log({
+              message: 'Patients found',
+              patients: getAllPatients.patients
+            });
+            res.status(200).json({
+              message: 'Patients found',
+              patients: getAllPatients.patients
+            });
             _context5.next = 13;
             break;
 
@@ -407,7 +411,7 @@ module.exports.get_all_patients = /*#__PURE__*/function () {
             console.log({
               Error: 'No patients found!'
             });
-            res.status(400).json('No patients found!');
+            res.status(404).json('No patients found!');
 
           case 13:
           case "end":

@@ -151,7 +151,7 @@ module.exports.get_patient = async (req, res) => {
 
 		handleErrors(err);
 		console.log({ Error: 'Patient not found!' });
-		res.status(400).json('Patient not found!');
+		res.status(404).json('Patient not found!');
 
 	}
 }
@@ -163,14 +163,14 @@ module.exports.get_all_patients = async (req, res) => {
 			{ _id: req.userId }
 		).populate('patients');
 
-		console.log(getAllPatients);
-		res.status(200).json(getAllPatients.patients);
+		console.log({ message: 'Patients found', patients: getAllPatients.patients });
+		res.status(200).json({ message: 'Patients found', patients: getAllPatients.patients });
 
 	} catch (err) {
 
 		handleErrors(err);
 		console.log({ Error: 'No patients found!' });
-		res.status(400).json('No patients found!');
+		res.status(404).json('No patients found!');
 
 	}
 }

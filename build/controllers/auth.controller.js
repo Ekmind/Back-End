@@ -59,27 +59,35 @@ module.exports.signup_post = /*#__PURE__*/function () {
           case 7:
             user = _context.sent;
             token = createToken(user._id);
-            console.log(user);
+            console.log({
+              message: 'User registered',
+              user: user
+            });
             res.cookie('jwt', token, {
               maxAge: Time,
               httpOnly: true
             });
             res.status(201).json({
+              message: 'User registered',
               user: user,
               token: token
             });
-            _context.next = 18;
+            _context.next = 19;
             break;
 
           case 14:
             _context.prev = 14;
             _context.t0 = _context["catch"](1);
             errors = (0, _handler.handleErrors)(_context.t0);
-            res.status(400).json({
+            console.log({
+              message: 'User could not be register',
               errors: errors
             });
+            res.status(400).json({
+              message: 'User could not be register'
+            });
 
-          case 18:
+          case 19:
           case "end":
             return _context.stop();
         }
@@ -119,18 +127,22 @@ module.exports.login_post = /*#__PURE__*/function () {
               user: user,
               token: token
             });
-            _context2.next = 15;
+            _context2.next = 16;
             break;
 
           case 11:
             _context2.prev = 11;
             _context2.t0 = _context2["catch"](1);
             errors = (0, _handler.handleErrors)(_context2.t0);
-            res.status(400).json({
+            console.log({
+              message: 'User can not be logged in',
               errors: errors
             });
+            res.status(400).json({
+              Error: 'User can not be logged in'
+            });
 
-          case 15:
+          case 16:
           case "end":
             return _context2.stop();
         }
@@ -146,7 +158,7 @@ module.exports.login_post = /*#__PURE__*/function () {
 
 module.exports.login_get = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var token, decoded, userId, user, errors;
+    var token, decoded, userId, user;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
@@ -171,16 +183,21 @@ module.exports.login_get = /*#__PURE__*/function () {
               user: user,
               token: token
             });
-            _context3.next = 15;
+            _context3.next = 16;
             break;
 
           case 11:
             _context3.prev = 11;
             _context3.t0 = _context3["catch"](1);
-            errors = (0, _handler.handleErrors)(_context3.t0);
-            console.log(errors);
+            (0, _handler.handleErrors)(_context3.t0);
+            console.log({
+              Error: 'Can not bring user credentials'
+            });
+            res.json({
+              Error: 'Can not bring user credentials'
+            });
 
-          case 15:
+          case 16:
           case "end":
             return _context3.stop();
         }
@@ -196,7 +213,7 @@ module.exports.login_get = /*#__PURE__*/function () {
 
 module.exports.logout_get = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var token, errors;
+    var token;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
@@ -210,8 +227,13 @@ module.exports.logout_get = /*#__PURE__*/function () {
               console.log('Token:', token);
               res.status(200).json('User was logged out successfully');
             } catch (err) {
-              errors = (0, _handler.handleErrors)(err);
-              console.log(errors);
+              (0, _handler.handleErrors)(err);
+              console.log({
+                Error: 'User can not be logged out'
+              });
+              res.json({
+                Error: 'User can not be logged out'
+              });
             }
 
           case 2:

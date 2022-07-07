@@ -23,6 +23,5 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/', hubRoutes);
-// app.use('/api/user', userRoutes)
 
 export default app;

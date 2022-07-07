@@ -34,7 +34,6 @@ app.get('/', function (req, res) {
     name: "Ekmind API"
   });
 });
-app.use('/api/', _hub["default"]); // app.use('/api/user', userRoutes)
-
+app.use('/api/', _hub["default"]);
 var _default = app;
 exports["default"] = _default;

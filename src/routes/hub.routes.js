@@ -1,10 +1,16 @@
 import { Router } from "express";
 const router = Router();
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../docs/index.js');
 
 import * as authCtrl from '../controllers/auth.controller';
 import * as patientCtrl from '../controllers/patient.controller';
 import * as appointmentCtrl from '../controllers/appointment.controller';
 import { authJwt, verifyCredentials } from "../middlewares";
+
+//Swagger Documentation
+router.use('/docs', swaggerUi.serve);
+router.get('/docs', swaggerUi.setup(swaggerDocument));
 
 //Sign Up (Registration)
 router.get('/signup', () => { });

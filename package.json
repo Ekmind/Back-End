@@ -1,6 +1,6 @@
 {
-  "name": "prueba3",
-  "version": "1.0.0",
+  "name": "prueba5",
+  "version": "0.4.5",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.5",
     "morgan": "^1.10.0",
+    "swagger-jsdoc": "^6.2.1",
+    "swagger-ui-express": "^4.4.0",
     "validator": "^13.7.0"
   },
   "devDependencies": {

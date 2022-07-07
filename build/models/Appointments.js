@@ -10,10 +10,14 @@ var mongoose = require('mongoose');
 var appointmentSchema = new mongoose.Schema({
   date: Date,
   notes: String,
-  patient: mongoose.Types.ObjectId,
-  completed: {
+  patient: {
+    ref: 'Patient',
+    type: mongoose.Schema.Types.ObjectId,
+    unique: true
+  },
+  pending: {
     type: Boolean,
-    "default": false
+    "default": true
   },
   emotional_data: [{
     angry: Number,

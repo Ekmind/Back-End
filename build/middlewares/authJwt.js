@@ -26,7 +26,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //Check If User Token Exist
 var verifyToken = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res, next) {
-    var token, decoded, user, errors;
+    var token, decoded, user;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -60,11 +60,10 @@ var verifyToken = /*#__PURE__*/function () {
             }
 
             return _context.abrupt("return", res.status(404).json({
-              message: 'No user found'
+              message: 'Unauthorized'
             }));
 
           case 11:
-            // console.log('Token owner: ' + user)
             next();
             _context.next = 19;
             break;
@@ -72,10 +71,12 @@ var verifyToken = /*#__PURE__*/function () {
           case 14:
             _context.prev = 14;
             _context.t0 = _context["catch"](0);
-            errors = (0, _handler.handleErrors)(_context.t0);
-            console.log(errors);
+            (0, _handler.handleErrors)(_context.t0);
+            console.log({
+              message: 'Authentication failed'
+            });
             return _context.abrupt("return", res.status(401).json({
-              message: 'Unauthorized'
+              message: 'Authentication failed'
             }));
 
           case 19:

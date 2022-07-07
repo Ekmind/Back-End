@@ -1,8 +1,8 @@
 {
   "errors": {
-    "name": "",
-    "last_name": "",
-    "email": "Please enter a valid email",
-    "password": ""
+    "name": "Please enter your name",
+    "last_name": "Please enter your last name",
+    "email": "Please enter an email",
+    "password": "Please enter a password"
   }
 }

@@ -98,7 +98,7 @@ module.exports.create_appointment = /*#__PURE__*/function () {
             console.log({
               message: 'Patient not found'
             });
-            res.status(400).json({
+            res.status(404).json({
               Error: 'Patient not found'
             });
 
@@ -165,7 +165,9 @@ module.exports.update_appointment = /*#__PURE__*/function () {
             console.log({
               message: 'Appointment could not be updated'
             });
-            return _context2.abrupt("return", res.status(400).json('Error: Appointment could not be updated'));
+            return _context2.abrupt("return", res.status(400).json({
+              Error: 'Appointment could not be updated'
+            }));
 
           case 19:
             console.log('Patient does not exist');
@@ -295,4 +297,318 @@ module.exports.delete_appointment = /*#__PURE__*/function () {
   return function (_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
-}(); //Deactivate Appointment
+}(); //Set Appointment as Completed
+
+
+module.exports.set_as_completed = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
+    var appointment, completed, completedPatient;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.prev = 0;
+            _context4.next = 3;
+            return _Appointments["default"].findById({
+              _id: req.params.appointment_id
+            });
+
+          case 3:
+            appointment = _context4.sent;
+
+            if (!appointment) {
+              _context4.next = 21;
+              break;
+            }
+
+            _context4.prev = 5;
+            _context4.next = 8;
+            return _Appointments["default"].findByIdAndUpdate({
+              _id: appointment._id
+            }, {
+              $set: {
+                pending: false
+              }
+            }, {
+              "new": true
+            });
+
+          case 8:
+            completed = _context4.sent;
+            _context4.next = 11;
+            return _Patient["default"].findByIdAndUpdate({
+              _id: appointment.patient
+            }, {
+              $pull: {
+                appointments: appointment._id
+              }
+            }, {
+              "new": true
+            });
+
+          case 11:
+            completedPatient = _context4.sent;
+            console.log({
+              message: 'Appointment completed',
+              pending: completed.pending
+            });
+            return _context4.abrupt("return", res.status(200).json({
+              message: 'Appointment completed',
+              pending: completed.pending
+            }));
+
+          case 16:
+            _context4.prev = 16;
+            _context4.t0 = _context4["catch"](5);
+            (0, _handler.handleErrors)(_context4.t0);
+            console.log({
+              Error: 'Appointment could not be set as completed'
+            });
+            return _context4.abrupt("return", res.json({
+              Error: 'Appointment could not be set as completed'
+            }));
+
+          case 21:
+            console.log({
+              message: 'Appointment not found'
+            });
+            res.status(404).json({
+              message: 'Appointment not found'
+            });
+            _context4.next = 30;
+            break;
+
+          case 25:
+            _context4.prev = 25;
+            _context4.t1 = _context4["catch"](0);
+            (0, _handler.handleErrors)(_context4.t1);
+            console.log({
+              Error: 'Valid ObjectId missing'
+            });
+            res.json({
+              Error: 'Valid ObjectId missing'
+            });
+
+          case 30:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[0, 25], [5, 16]]);
+  }));
+
+  return function (_x7, _x8) {
+    return _ref4.apply(this, arguments);
+  };
+}(); //Set to pending
+
+
+module.exports.set_to_pending = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+    var appointment, patient, pending, pendingPatient;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.prev = 0;
+            _context5.next = 3;
+            return _Appointments["default"].findById({
+              _id: req.params.appointment_id
+            });
+
+          case 3:
+            appointment = _context5.sent;
+            _context5.next = 6;
+            return _Patient["default"].findById({
+              _id: appointment.patient
+            });
+
+          case 6:
+            patient = _context5.sent;
+
+            if (!appointment) {
+              _context5.next = 25;
+              break;
+            }
+
+            _context5.prev = 8;
+            _context5.next = 11;
+            return _Appointments["default"].findByIdAndUpdate({
+              _id: appointment._id
+            }, {
+              $set: {
+                pending: true
+              }
+            }, {
+              "new": true
+            });
+
+          case 11:
+            pending = _context5.sent;
+            _context5.next = 14;
+            return _Patient["default"].findByIdAndUpdate({
+              _id: appointment.patient
+            }, {
+              $push: {
+                appointments: appointment._id
+              }
+            }, {
+              "new": true
+            });
+
+          case 14:
+            pendingPatient = _context5.sent;
+            pendingPatient.save();
+            console.log({
+              message: 'Appointment pending',
+              pending: pending.pending
+            });
+            return _context5.abrupt("return", res.status(200).json({
+              message: 'Appointment pending',
+              pending: pending.pending
+            }));
+
+          case 20:
+            _context5.prev = 20;
+            _context5.t0 = _context5["catch"](8);
+            (0, _handler.handleErrors)(_context5.t0);
+            console.log({
+              Error: 'Appointment could not be set to pending'
+            });
+            return _context5.abrupt("return", res.json({
+              Error: 'Appointment could not be set to pending'
+            }));
+
+          case 25:
+            console.log({
+              message: 'Appointment not found'
+            });
+            res.status(404).json({
+              message: 'Appointment not found'
+            });
+            _context5.next = 34;
+            break;
+
+          case 29:
+            _context5.prev = 29;
+            _context5.t1 = _context5["catch"](0);
+            (0, _handler.handleErrors)(_context5.t1);
+            console.log({
+              Error: 'Valid ObjectId missing'
+            });
+            res.json({
+              Error: 'Valid ObjectId missing'
+            });
+
+          case 34:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[0, 29], [8, 20]]);
+  }));
+
+  return function (_x9, _x10) {
+    return _ref5.apply(this, arguments);
+  };
+}(); //Insert Emotional Data
+
+
+module.exports.insert_data = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
+    var _req$body3, angry, disgust, fear, happy, neutral, sad, surprise, appointment, insert;
+
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            _req$body3 = req.body, angry = _req$body3.angry, disgust = _req$body3.disgust, fear = _req$body3.fear, happy = _req$body3.happy, neutral = _req$body3.neutral, sad = _req$body3.sad, surprise = _req$body3.surprise;
+            _context6.prev = 1;
+            _context6.next = 4;
+            return _Appointments["default"].findById({
+              _id: req.params.appointment_id
+            });
+
+          case 4:
+            appointment = _context6.sent;
+
+            if (!appointment) {
+              _context6.next = 19;
+              break;
+            }
+
+            _context6.prev = 6;
+            _context6.next = 9;
+            return _Appointments["default"].findByIdAndUpdate({
+              _id: appointment._id
+            }, {
+              $push: {
+                emotional_data: {
+                  angry: angry,
+                  disgust: disgust,
+                  fear: fear,
+                  happy: happy,
+                  neutral: neutral,
+                  sad: sad,
+                  surprise: surprise
+                }
+              }
+            }, {
+              "new": true
+            });
+
+          case 9:
+            insert = _context6.sent;
+            console.log({
+              message: 'Emotional data inserted',
+              appointment: insert.emotional_data
+            });
+            return _context6.abrupt("return", res.json({
+              message: 'Emotional data inserted',
+              appointment: insert.emotional_data
+            }));
+
+          case 14:
+            _context6.prev = 14;
+            _context6.t0 = _context6["catch"](6);
+            (0, _handler.handleErrors)(_context6.t0);
+            console.log({
+              Error: 'Data could not be inserted'
+            });
+            res.json({
+              Error: 'Data could not be inserted'
+            });
+
+          case 19:
+            console.log({
+              Error: 'Appointment not found'
+            });
+            res.status(404).json({
+              Error: 'Appointment not found'
+            });
+            _context6.next = 28;
+            break;
+
+          case 23:
+            _context6.prev = 23;
+            _context6.t1 = _context6["catch"](1);
+            (0, _handler.handleErrors)(_context6.t1);
+            console.log({
+              Error: 'Valid ObjectId missing'
+            });
+            res.json({
+              Error: 'Valid ObjectId missing'
+            });
+
+          case 28:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6, null, [[1, 23], [6, 14]]);
+  }));
+
+  return function (_x11, _x12) {
+    return _ref6.apply(this, arguments);
+  };
+}();

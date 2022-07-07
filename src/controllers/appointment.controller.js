@@ -31,7 +31,7 @@ module.exports.create_appointment = async (req, res) => {
     } catch (err) {
         handleErrors(err);
         console.log({ message: 'Patient not found' });
-        res.status(400).json({ Error: 'Patient not found' });
+        res.status(404).json({ Error: 'Patient not found' });
     }
 }
 
@@ -53,7 +53,7 @@ module.exports.update_appointment = async (req, res) => {
             } catch (err) {
                 const errors = handleErrors(err);
                 console.log({ message: 'Appointment could not be updated' });
-                return res.status(400).json('Error: Appointment could not be updated');
+                return res.status(400).json({ Error: 'Appointment could not be updated' });
             }
         }
 

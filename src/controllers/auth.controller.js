@@ -23,9 +23,9 @@ module.exports.signup_post = async (req, res) => {
         const token = createToken(user._id);
 
 
-        console.log(user);
+        console.log({ message: 'User registered', user: user });
         res.cookie('jwt', token, { maxAge: Time, httpOnly: true });
-        res.status(201).json({ user: user, token: token });
+        res.status(201).json({ message: 'User registered', user: user, token: token });
     } catch (err) {
         const errors = handleErrors(err);
         console.log({ message: 'User could not be register', errors: errors })

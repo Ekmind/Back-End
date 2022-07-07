@@ -5,12 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _Appointments = _interopRequireDefault(require("./Appointments"));
-
-var _User = _interopRequireDefault(require("./User"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 var mongoose = require('mongoose');
 
 var patientSchema = new mongoose.Schema({
@@ -26,10 +20,11 @@ var patientSchema = new mongoose.Schema({
     type: Boolean,
     "default": true
   },
-  appointments: {
+  appointments: [{
     ref: 'Appointment',
-    type: mongoose.Types.ObjectId
-  }
+    type: mongoose.Types.ObjectId,
+    unique: true
+  }]
 }, {
   timestamps: true,
   versionKey: false

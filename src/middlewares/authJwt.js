@@ -15,12 +15,12 @@ export const verifyToken = async (req, res, next) => {
         req.userId = decoded.id;
 
         const user = await User.findById(req.userId, { password: 0 });
-        if (!user) return res.status(404).json({ message: 'No user found' });
+        if (!user) return res.status(404).json({ message: 'Unauthorized' });
         next();
     } catch (error) {
         handleErrors(error)
-        console.log({ message: 'Unauthorized' })
-        return res.status(401).json({ message: 'Unauthorized' });
+        console.log({ message: 'Authentication failed' })
+        return res.status(401).json({ message: 'Authentication failed' });
     }
 };
 
