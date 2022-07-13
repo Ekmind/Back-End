@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 import User from '../models/User';
 import Role from '../models/Role';
 import { handleErrors } from "../errors/handler.error";
+import cookieParser from 'cookie-parser';
 
 //1h time in ms
 const Time = (1000 * 60 * 60);
@@ -24,7 +25,7 @@ module.exports.signup_post = async (req, res) => {
 
 
         console.log({ message: 'User registered', user: user });
-        res.cookie('jwt', token, { maxAge: Time, httpOnly: true }).send();
+        res.cookie('jwt', token, { maxAge: Time, httpOnly: true });
         res.status(201).json({ message: 'User registered', user: user, token: token });
     } catch (err) {
         const errors = handleErrors(err);
@@ -42,7 +43,7 @@ module.exports.login_post = async (req, res) => {
         const token = createToken(user._id);
 
         console.log('User logged in');
-        res.cookie('jwt', token, { httpOnly: true, maxAge: Time }).send();
+        res.cookie('jwt', token, { httpOnly: true, maxAge: Time });
         res.status(200).json({ message: 'User was logged in successfully', user: user, token: token });
 
     } catch (err) {
