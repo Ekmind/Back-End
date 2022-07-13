@@ -27,7 +27,9 @@ var CORS = require('cors');
 
 var app = (0, _express["default"])();
 (0, _initialSetup.createRoles)();
-app.use(CORS());
+app.use(CORS({
+  origin: ['http://localhost:4200']
+}));
 app.set('pkg', _package["default"]);
 app.use((0, _morgan["default"])('dev'));
 app.use(_express["default"].json());

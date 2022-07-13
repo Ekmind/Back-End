@@ -11,7 +11,7 @@ const CORS = require('cors');
 const app = express();
 createRoles();
 
-app.use(CORS());
+app.use(CORS({ origin: ['http://localhost:4200'] }));
 app.set('pkg', pkg);
 app.use(morgan('dev'));
 app.use(express.json());
