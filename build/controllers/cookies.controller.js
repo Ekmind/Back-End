@@ -56,9 +56,13 @@ module.exports.set_cookie = /*#__PURE__*/function () {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            res.cookie('name', 'Carlos', {
-              httpOnly: true
-            });
+            try {
+              res.cookie('name', 'Carlos', {
+                httpOnly: true
+              });
+            } catch (err) {
+              console.log(err.message);
+            }
 
           case 1:
           case "end":

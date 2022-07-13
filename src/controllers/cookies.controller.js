@@ -11,5 +11,9 @@ module.exports.get_cookie = async (req, res) => {
 }
 
 module.exports.set_cookie = async (req, res) => {
-    res.cookie('name', 'Carlos', { httpOnly: true });
+    try {
+        res.cookie('name', 'Carlos', { httpOnly: true });
+    } catch (err) {
+        console.log(err.message)
+    }
 }
