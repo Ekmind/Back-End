@@ -94,7 +94,7 @@ module.exports.create_patient = /*#__PURE__*/function () {
           case 27:
             _context.prev = 27;
             _context.t0 = _context["catch"](16);
-            (0, _handler.handleErrors)(_context.t0);
+            console.log((0, _handler.handleErrors)(_context.t0));
             console.log({
               Error: 'Patient could not be created'
             });

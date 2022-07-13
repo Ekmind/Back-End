@@ -2,17 +2,19 @@ import morgan from "morgan";
 import express from "express";
 import pkg from '../package.json';
 import hubRoutes from "./routes/hub.routes";
+import cookieRoutes from "./routes/cookie.routes"
 import { createRoles } from "./libs/initialSetup";
+import { handleErrors } from "./errors/handler.error";
 const cookieParser = require('cookie-parser');
 const CORS = require('cors');
 
 const app = express();
 createRoles();
 
+app.use(CORS());
 app.set('pkg', pkg);
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(CORS());
 app.use(cookieParser());
 
 app.get('/', (req, res) => {
@@ -23,5 +25,6 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/', hubRoutes);
+app.use('/cookies/', cookieRoutes);
 
 export default app;

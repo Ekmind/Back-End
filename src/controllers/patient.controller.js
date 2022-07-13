@@ -35,7 +35,7 @@ module.exports.create_patient = async (req, res) => {
 
 			} catch (err) {
 
-				handleErrors(err);
+				console.log(handleErrors(err));
 				console.log({ Error: 'Patient could not be created' });
 				return res.json({ Error: 'Patient could not be created' });
 
