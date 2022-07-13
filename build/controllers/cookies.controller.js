@@ -49,3 +49,26 @@ module.exports.get_cookie = /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }();
+
+module.exports.set_cookie = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            res.cookie('name', 'Carlos', {
+              httpOnly: true
+            });
+
+          case 1:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function (_x3, _x4) {
+    return _ref2.apply(this, arguments);
+  };
+}();
