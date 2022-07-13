@@ -73,10 +73,8 @@ var handleErrors = function handleErrors(err) {
     return errors;
   }
 
-  console.log(message);
-  saveLogs(path, value({
-    message: message
-  }));
+  console.log(message); // saveLogs(path, value({ message },));
+
   return errors;
 };
 

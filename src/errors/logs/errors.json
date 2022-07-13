@@ -1,8 +1,7 @@
 {
-  "errors": {
-    "name": "Please enter your name",
-    "last_name": "Please enter your last name",
-    "email": "Please enter an email",
-    "password": "Please enter a password"
-  }
+  "message": [
+    {
+      "error": "invalid token"
+    }
+  ]
 }

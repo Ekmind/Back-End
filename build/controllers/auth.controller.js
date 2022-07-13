@@ -66,7 +66,7 @@ module.exports.signup_post = /*#__PURE__*/function () {
             res.cookie('jwt', token, {
               maxAge: Time,
               httpOnly: true
-            });
+            }).send();
             res.status(201).json({
               message: 'User registered',
               user: user,
@@ -121,7 +121,7 @@ module.exports.login_post = /*#__PURE__*/function () {
             res.cookie('jwt', token, {
               httpOnly: true,
               maxAge: Time
-            });
+            }).send();
             res.status(200).json({
               message: 'User was logged in successfully',
               user: user,

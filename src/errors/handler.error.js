@@ -50,6 +50,6 @@ export const handleErrors = (err) => {
         return errors
     }
     console.log(message);
-    saveLogs(path, value({ message },));
+    // saveLogs(path, value({ message },));
     return errors;
 }
