@@ -34,8 +34,8 @@ router.get('/docs', swaggerUi.setup(swaggerDocument)); //Sign Up (Registration)
 router.get('/signup', function () {});
 router.post('/signup', authCtrl.signup_post); //Log In (Authentication)
 
-router.get('/login', _middlewares.authJwt.verifyToken, authCtrl.login_get);
-router.post('/login', authCtrl.login_post); //Log Out (End User Session)
+router.post('/login', authCtrl.login_post);
+router.get('/login', _middlewares.authJwt.verifyToken, authCtrl.login_get); //Log Out (End User Session)
 
 router.get('/logout', authCtrl.logout_get); //Patient Manegement
 

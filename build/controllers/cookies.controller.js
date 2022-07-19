@@ -8,6 +8,11 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+var cookie = require('cookie');
+
+var time = 1000 * 60 * 60 * 4;
+var expired = 1 / 1000;
+
 module.exports.get_cookie = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
     var cookies, errors;
@@ -57,11 +62,16 @@ module.exports.set_cookie = /*#__PURE__*/function () {
         switch (_context2.prev = _context2.next) {
           case 0:
             try {
-              res.cookie('name', 'Carlos', {
-                httpOnly: true
+              res.cookie('token', 'Just_a_Test_010', {
+                httpOnly: false,
+                secure: false,
+                sameSite: false,
+                maxAge: 1000 * 60 * 15
               });
+              res.status(200).json('Cookie should be set now');
             } catch (err) {
               console.log(err.message);
+              res.json(err.message);
             }
 
           case 1:
@@ -74,5 +84,84 @@ module.exports.set_cookie = /*#__PURE__*/function () {
 
   return function (_x3, _x4) {
     return _ref2.apply(this, arguments);
+  };
+}();
+
+module.exports.check_cookie = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
+    var _cookie;
+
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.prev = 0;
+            res.header({
+              'Access-Control-Allow-Credentials': true
+            });
+            _cookie = req.cookies.token;
+            console.log(_cookie);
+
+            if (!_cookie) {
+              _context3.next = 6;
+              break;
+            }
+
+            return _context3.abrupt("return", res.json('Cookie found'));
+
+          case 6:
+            res.json('Cookie not found');
+            _context3.next = 13;
+            break;
+
+          case 9:
+            _context3.prev = 9;
+            _context3.t0 = _context3["catch"](0);
+            console.log(_context3.t0.message);
+            res.json(_context3.t0.message);
+
+          case 13:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[0, 9]]);
+  }));
+
+  return function (_x5, _x6) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+module.exports.delete_cookie = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
+    var _cookie2;
+
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            try {
+              _cookie2 = req.cookies['token'];
+              console.log(_cookie2);
+              res.cookie('token', 'expired', {
+                maxAge: 1
+              });
+              res.status(200).json('Cookie should be deleted');
+            } catch (err) {
+              console.log(err.message);
+              res.json(err.message);
+            }
+
+          case 1:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4);
+  }));
+
+  return function (_x7, _x8) {
+    return _ref4.apply(this, arguments);
   };
 }();

@@ -21,7 +21,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var jwt = require('jsonwebtoken');
 
 //1h time in ms
-var Time = 1000 * 60 * 60; //Token creation function
+var Time = 1000 * 60 * 60 * 3; //Token creation function
 
 var createToken = function createToken(id) {
   return jwt.sign({
@@ -61,24 +61,20 @@ module.exports.signup_post = /*#__PURE__*/function () {
           case 7:
             user = _context.sent;
             token = createToken(user._id);
-            console.log({
-              message: 'User registered',
-              user: user
+            console.log('User registered');
+            res.header({
+              'Access-Control-Allow-Credentials': true
             });
             res.cookie('jwt', token, {
               maxAge: Time,
               httpOnly: true
             });
-            res.status(201).json({
-              message: 'User registered',
-              user: user,
-              token: token
-            });
-            _context.next = 19;
+            res.status(200).json('User registered');
+            _context.next = 20;
             break;
 
-          case 14:
-            _context.prev = 14;
+          case 15:
+            _context.prev = 15;
             _context.t0 = _context["catch"](1);
             errors = (0, _handler.handleErrors)(_context.t0);
             console.log({
@@ -89,12 +85,12 @@ module.exports.signup_post = /*#__PURE__*/function () {
               message: 'User could not be register'
             });
 
-          case 19:
+          case 20:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[1, 14]]);
+    }, _callee, null, [[1, 15]]);
   }));
 
   return function (_x, _x2) {
@@ -111,29 +107,47 @@ module.exports.login_post = /*#__PURE__*/function () {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
+            res.header({
+              'Access-Control-Allow-Credentials': true
+            });
             _context2.prev = 1;
-            _context2.next = 4;
+            _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
+            _context2.next = 5;
             return _User["default"].login(email, password);
 
-          case 4:
+          case 5:
             user = _context2.sent;
+
+            if (!user) {
+              _context2.next = 14;
+              break;
+            }
+
             token = createToken(user._id);
-            console.log('User logged in');
             res.cookie('jwt', token, {
               httpOnly: true,
-              maxAge: Time
+              maxAge: Time,
+              sameSite: false,
+              secure: false
             });
+            console.log('User logged in');
             res.status(200).json({
-              message: 'User was logged in successfully',
-              user: user,
-              token: token
+              messge: 'User is logged in',
+              user: user.name
             });
-            _context2.next = 16;
+            return _context2.abrupt("return");
+
+          case 14:
+            return _context2.abrupt("return", res.json({
+              message: 'User not found'
+            }));
+
+          case 15:
+            _context2.next = 22;
             break;
 
-          case 11:
-            _context2.prev = 11;
+          case 17:
+            _context2.prev = 17;
             _context2.t0 = _context2["catch"](1);
             errors = (0, _handler.handleErrors)(_context2.t0);
             console.log({
@@ -144,12 +158,12 @@ module.exports.login_post = /*#__PURE__*/function () {
               Error: 'User can not be logged in'
             });
 
-          case 16:
+          case 22:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[1, 11]]);
+    }, _callee2, null, [[1, 17]]);
   }));
 
   return function (_x3, _x4) {
@@ -165,16 +179,19 @@ module.exports.login_get = /*#__PURE__*/function () {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
+            _context3.prev = 0;
+            res.header({
+              'Access-Control-Allow-Credentials': true
+            });
             token = req.cookies['jwt'];
-            _context3.prev = 1;
             decoded = jwt.verify(token, process.env.JWT_SECRET);
             userId = decoded.id;
-            _context3.next = 6;
+            _context3.next = 7;
             return _User["default"].findById({
               _id: userId
             });
 
-          case 6:
+          case 7:
             user = _context3.sent;
             console.log({
               user: user,
@@ -182,15 +199,14 @@ module.exports.login_get = /*#__PURE__*/function () {
             });
             res.status(200).json({
               message: 'User is logged in',
-              user: user,
-              token: token
+              user: user
             });
-            _context3.next = 16;
+            _context3.next = 17;
             break;
 
-          case 11:
-            _context3.prev = 11;
-            _context3.t0 = _context3["catch"](1);
+          case 12:
+            _context3.prev = 12;
+            _context3.t0 = _context3["catch"](0);
             (0, _handler.handleErrors)(_context3.t0);
             console.log({
               Error: 'Can not bring user credentials'
@@ -199,12 +215,12 @@ module.exports.login_get = /*#__PURE__*/function () {
               Error: 'Can not bring user credentials'
             });
 
-          case 16:
+          case 17:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[1, 11]]);
+    }, _callee3, null, [[0, 12]]);
   }));
 
   return function (_x5, _x6) {
@@ -223,6 +239,9 @@ module.exports.logout_get = /*#__PURE__*/function () {
             token = req.cookies['jwt'];
 
             try {
+              res.header({
+                'Access-Control-Allow-Credentials': true
+              });
               res.cookie('jwt', '', {
                 maxAge: 1
               });

@@ -17,8 +17,8 @@ router.get('/signup', () => { });
 router.post('/signup', authCtrl.signup_post);
 
 //Log In (Authentication)
-router.get('/login', authJwt.verifyToken, authCtrl.login_get);
 router.post('/login', authCtrl.login_post);
+router.get('/login', authJwt.verifyToken, authCtrl.login_get);
 
 //Log Out (End User Session)
 router.get('/logout', authCtrl.logout_get);
