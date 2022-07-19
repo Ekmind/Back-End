@@ -50,7 +50,7 @@ module.exports.login_post = async (req, res) => {
 
             res.cookie('jwt', token, { httpOnly: true, maxAge: Time, sameSite: false, secure: false });
             console.log('User logged in');
-            res.status(200).json({ messge: 'User is logged in', user: user.name });
+            res.status(200).json({ message: 'User is logged in', user: user.name });
             return;
 
         } else {

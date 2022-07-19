@@ -132,7 +132,7 @@ module.exports.login_post = /*#__PURE__*/function () {
             });
             console.log('User logged in');
             res.status(200).json({
-              messge: 'User is logged in',
+              message: 'User is logged in',
               user: user.name
             });
             return _context2.abrupt("return");
