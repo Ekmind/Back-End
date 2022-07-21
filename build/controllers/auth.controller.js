@@ -242,7 +242,7 @@ module.exports.logout_get = /*#__PURE__*/function () {
               res.header({
                 'Access-Control-Allow-Credentials': true
               });
-              res.cookie('jwt', '', {
+              res.cookie('jwt', 'expired', {
                 maxAge: 1
               });
               console.log('Token:', token);

@@ -7,7 +7,6 @@ const appointmentSchema = new mongoose.Schema(
         patient: {
             ref: 'Patient',
             type: mongoose.Schema.Types.ObjectId,
-            unique: true
         },
         pending: {
             type: Boolean,

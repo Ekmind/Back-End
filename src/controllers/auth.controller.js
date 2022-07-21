@@ -93,7 +93,7 @@ module.exports.logout_get = async (req, res) => {
     try {
 
         res.header({ 'Access-Control-Allow-Credentials': true });
-        res.cookie('jwt', '', { maxAge: 1 });
+        res.cookie('jwt', 'expired', { maxAge: 1 });
         console.log('Token:', token);
         res.status(200).json('User was logged out successfully');
 

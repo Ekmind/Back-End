@@ -12,8 +12,7 @@ var appointmentSchema = new mongoose.Schema({
   notes: String,
   patient: {
     ref: 'Patient',
-    type: mongoose.Schema.Types.ObjectId,
-    unique: true
+    type: mongoose.Schema.Types.ObjectId
   },
   pending: {
     type: Boolean,
