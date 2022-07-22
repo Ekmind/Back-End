@@ -12,8 +12,8 @@ const app = express();
 createRoles();
 
 app.use(CORS({
-    origin: ['http://localhost:4200'],
-    credentials: true
+    origin: ['http://localhost:4200', 'https://ekmind-api.herokuapp.com'],
+    credentials: true,
 }));
 app.set('pkg', pkg);
 app.use(morgan('dev'));

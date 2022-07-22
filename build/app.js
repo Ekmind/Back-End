@@ -28,7 +28,7 @@ var CORS = require('cors');
 var app = (0, _express["default"])();
 (0, _initialSetup.createRoles)();
 app.use(CORS({
-  origin: ['http://localhost:4200'],
+  origin: ['http://localhost:4200', 'https://ekmind-api.herokuapp.com'],
   credentials: true
 }));
 app.set('pkg', _package["default"]);
