@@ -72,7 +72,7 @@ module.exports.signup_post = /*#__PURE__*/function () {
               maxAge: Time,
               sameSite: false,
               secure: false
-            }, "sameSite", none));
+            }, "sameSite", 'none'));
             res.status(200).json('User registered');
             _context.next = 20;
             break;
@@ -133,7 +133,7 @@ module.exports.login_post = /*#__PURE__*/function () {
               maxAge: Time,
               sameSite: false,
               secure: false
-            }, "sameSite", none));
+            }, "sameSite", 'none'));
             console.log('User logged in');
             res.status(200).json({
               message: 'User is logged in',

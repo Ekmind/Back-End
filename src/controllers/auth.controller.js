@@ -26,7 +26,7 @@ module.exports.signup_post = async (req, res) => {
 
         console.log('User registered');
         res.header({ 'Access-Control-Allow-Credentials': true });
-        res.cookie('jwt', token, { httpOnly: true, maxAge: Time, sameSite: false, secure: false, sameSite: none });
+        res.cookie('jwt', token, { httpOnly: true, maxAge: Time, sameSite: false, secure: false, sameSite: 'none' });
         res.status(200).json('User registered');
 
     } catch (err) {
@@ -48,7 +48,7 @@ module.exports.login_post = async (req, res) => {
 
             const token = createToken(user._id);
 
-            res.cookie('jwt', token, { httpOnly: true, maxAge: Time, sameSite: false, secure: false, sameSite: none });
+            res.cookie('jwt', token, { httpOnly: true, maxAge: Time, sameSite: false, secure: false, sameSite: 'none' });
             console.log('User logged in');
             res.status(200).json({ message: 'User is logged in', user: user.name });
             return;
