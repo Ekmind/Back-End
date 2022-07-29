@@ -13,7 +13,6 @@ const patientSchema = new mongoose.Schema({
     appointments: [{
         ref: 'Appointment',
         type: mongoose.Types.ObjectId,
-        unique: true,
     }]
 }, {
     timestamps: true,

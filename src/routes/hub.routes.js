@@ -34,14 +34,17 @@ router.get('/deactivate/patient/:patient_id', authJwt.verifyToken, patientCtrl.d
 router.get('/get/patient/:patient_id', authJwt.verifyToken, patientCtrl.get_patient);
 router.get('/get/all/patients/:userId', authJwt.verifyToken, patientCtrl.get_all_patients);
 
-//Appointment Management
+//Appointment / Session Management
 router.post('/create/appointment/:patient_id', authJwt.verifyToken, appointmentCtrl.create_appointment);
 router.patch('/update/appointment/:appointment_id', authJwt.verifyToken, appointmentCtrl.update_appointment);
 router.delete('/delete/appointment/:appointment_id', authJwt.verifyToken, appointmentCtrl.delete_appointment);
 router.get('/complete/appointment/:appointment_id', authJwt.verifyToken, appointmentCtrl.set_as_completed);
 router.get('/pending/appointment/:appointment_id', authJwt.verifyToken, appointmentCtrl.set_to_pending);
 
-//Appointment -Emotional Data
+//Get Appointment / Session
+router.get('/get/all/appointments/:patient_id', authJwt.verifyToken, appointmentCtrl.get_all_appointments);
+
+//Appointment / Session -Emotional Data
 router.patch('/appointment/data/insert/:appointment_id', authJwt.verifyToken, appointmentCtrl.insert_data);
 
 export default router;

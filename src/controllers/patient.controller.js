@@ -58,6 +58,7 @@ module.exports.create_patient = async (req, res) => {
 //Update Patient Credentials
 module.exports.update_patient = async (req, res) => {
 	const { name, last_name, age, gender, image, phone, email } = req.body;
+	console.log(req.body)
 	try {
 		const patient = await Patient.findById({ _id: req.params.patient_id });
 		if (patient) {

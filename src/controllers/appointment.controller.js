@@ -4,14 +4,14 @@ import Patient from "../models/Patient";
 
 //Create Appointment
 module.exports.create_appointment = async (req, res) => {
-    const { date, notes } = req.body;
+    const { date, notes, emotional_data } = req.body;
 
     try {
         const patient = await Patient.findById({ _id: req.params.patient_id });
 
         if (patient) {
             try {
-                const newAppointment = await Appointment.create({ date: date, notes: notes, patient: patient.id });
+                const newAppointment = await Appointment.create({ date: date, notes: notes, patient: patient.id, emotional_data: emotional_data });
                 const addAppointment = await Patient.findByIdAndUpdate(
                     { _id: patient.id },
                     {
@@ -243,5 +243,18 @@ module.exports.insert_data = async (req, res) => {
         console.log({ Error: 'Valid ObjectId missing' });
         res.json({ Error: 'Valid ObjectId missing' });
 
+    }
+}
+
+module.exports.get_all_appointments = async (req, res) => {
+    try {
+
+        const sessions = await Patient.findById({ _id: req.params.patient_id }).populate('appointments');
+        res.status(200).json({ message: "Sessions found!", sessions: sessions.appointments })
+
+    } catch (err) {
+        errors = handleErrors(err);
+        console.log({ message: 'No sessions found', Error: errors });
+        res.json({ Error: 'No sessions found' });
     }
 }
