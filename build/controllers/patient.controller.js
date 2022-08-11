@@ -146,22 +146,23 @@ module.exports.update_patient = /*#__PURE__*/function () {
         switch (_context2.prev = _context2.next) {
           case 0:
             _req$body = req.body, name = _req$body.name, last_name = _req$body.last_name, age = _req$body.age, gender = _req$body.gender, image = _req$body.image, phone = _req$body.phone, email = _req$body.email;
-            _context2.prev = 1;
-            _context2.next = 4;
+            console.log(req.body);
+            _context2.prev = 2;
+            _context2.next = 5;
             return _Patient["default"].findById({
               _id: req.params.patient_id
             });
 
-          case 4:
+          case 5:
             patient = _context2.sent;
 
             if (!patient) {
-              _context2.next = 19;
+              _context2.next = 20;
               break;
             }
 
-            _context2.prev = 6;
-            _context2.next = 9;
+            _context2.prev = 7;
+            _context2.next = 10;
             return _Patient["default"].findByIdAndUpdate({
               _id: patient.id
             }, {
@@ -176,7 +177,7 @@ module.exports.update_patient = /*#__PURE__*/function () {
               "new": true
             });
 
-          case 9:
+          case 10:
             updatedPatient = _context2.sent;
             console.log({
               message: 'Patient updated',
@@ -187,9 +188,9 @@ module.exports.update_patient = /*#__PURE__*/function () {
               patient: updatedPatient
             }));
 
-          case 14:
-            _context2.prev = 14;
-            _context2.t0 = _context2["catch"](6);
+          case 15:
+            _context2.prev = 15;
+            _context2.t0 = _context2["catch"](7);
             (0, _handler.handleErrors)(_context2.t0);
             console.log({
               message: 'Patient could not be updated'
@@ -198,19 +199,19 @@ module.exports.update_patient = /*#__PURE__*/function () {
               Error: 'Patient could not be updated'
             }));
 
-          case 19:
+          case 20:
             console.log({
               message: 'Patient not found'
             });
             res.status(404).json({
               message: 'Patient not found'
             });
-            _context2.next = 28;
+            _context2.next = 29;
             break;
 
-          case 23:
-            _context2.prev = 23;
-            _context2.t1 = _context2["catch"](1);
+          case 24:
+            _context2.prev = 24;
+            _context2.t1 = _context2["catch"](2);
             (0, _handler.handleErrors)(_context2.t1);
             console.log({
               Error: 'Valid ObjectId missing'
@@ -219,12 +220,12 @@ module.exports.update_patient = /*#__PURE__*/function () {
               Error: 'Valid ObjectId missing'
             });
 
-          case 28:
+          case 29:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[1, 23], [6, 14]]);
+    }, _callee2, null, [[2, 24], [7, 15]]);
   }));
 
   return function (_x3, _x4) {

@@ -32,7 +32,8 @@ var verifyToken = /*#__PURE__*/function () {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
-            token = req.cookies['jwt']; // console.log('provided token: ' + token)
+            //Request cookie called 'jwt'
+            token = req.cookies['jwt']; //If there's no cookie called 'jwt', then return: 'No token was provided (You are not logged in)'
 
             if (token) {
               _context.next = 4;
@@ -44,8 +45,10 @@ var verifyToken = /*#__PURE__*/function () {
             }));
 
           case 4:
+            //If there is a cookie, then decode it, get the user ID stored within it.
             decoded = _jsonwebtoken["default"].verify(token, process.env.JWT_SECRET);
-            req.userId = decoded.id;
+            req.userId = decoded.id; //And use it to locate the user
+
             _context.next = 8;
             return _User["default"].findById(req.userId, {
               password: 0

@@ -19,13 +19,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //Create Appointment
 module.exports.create_appointment = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
-    var _req$body, date, notes, patient, newAppointment, addAppointment, errors;
+    var _req$body, date, notes, emotional_data, patient, newAppointment, addAppointment, _errors;
 
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _req$body = req.body, date = _req$body.date, notes = _req$body.notes;
+            _req$body = req.body, date = _req$body.date, notes = _req$body.notes, emotional_data = _req$body.emotional_data;
             _context.prev = 1;
             _context.next = 4;
             return _Patient["default"].findById({
@@ -45,7 +45,8 @@ module.exports.create_appointment = /*#__PURE__*/function () {
             return _Appointments["default"].create({
               date: date,
               notes: notes,
-              patient: patient.id
+              patient: patient.id,
+              emotional_data: emotional_data
             });
 
           case 9:
@@ -78,10 +79,10 @@ module.exports.create_appointment = /*#__PURE__*/function () {
           case 17:
             _context.prev = 17;
             _context.t0 = _context["catch"](6);
-            errors = (0, _handler.handleErrors)(_context.t0);
+            _errors = (0, _handler.handleErrors)(_context.t0);
             console.log({
               message: 'Appointment could not be created',
-              error: errors
+              error: _errors
             });
             res.status(400).json({
               Error: 'Appointment could not be created'
@@ -118,7 +119,7 @@ module.exports.create_appointment = /*#__PURE__*/function () {
 
 module.exports.update_appointment = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-    var _req$body2, date, notes, appointment, updatedAppointment, errors, _errors;
+    var _req$body2, date, notes, appointment, updatedAppointment, _errors2, _errors3;
 
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
@@ -161,7 +162,7 @@ module.exports.update_appointment = /*#__PURE__*/function () {
           case 14:
             _context2.prev = 14;
             _context2.t0 = _context2["catch"](6);
-            errors = (0, _handler.handleErrors)(_context2.t0);
+            _errors2 = (0, _handler.handleErrors)(_context2.t0);
             console.log({
               message: 'Appointment could not be updated'
             });
@@ -180,7 +181,7 @@ module.exports.update_appointment = /*#__PURE__*/function () {
           case 23:
             _context2.prev = 23;
             _context2.t1 = _context2["catch"](1);
-            _errors = (0, _handler.handleErrors)(_context2.t1);
+            _errors3 = (0, _handler.handleErrors)(_context2.t1);
             console.log({
               message: 'Valid ObjectId missing'
             });
@@ -610,5 +611,97 @@ module.exports.insert_data = /*#__PURE__*/function () {
 
   return function (_x11, _x12) {
     return _ref6.apply(this, arguments);
+  };
+}();
+
+module.exports.get_all_appointments = /*#__PURE__*/function () {
+  var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
+    var sessions;
+    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            _context7.prev = 0;
+            _context7.next = 3;
+            return _Patient["default"].findById({
+              _id: req.params.patient_id
+            }).populate('appointments');
+
+          case 3:
+            sessions = _context7.sent;
+            res.status(200).json({
+              message: "Sessions found!",
+              sessions: sessions.appointments
+            });
+            _context7.next = 12;
+            break;
+
+          case 7:
+            _context7.prev = 7;
+            _context7.t0 = _context7["catch"](0);
+            errors = (0, _handler.handleErrors)(_context7.t0);
+            console.log({
+              message: 'No sessions found',
+              Error: errors
+            });
+            res.json({
+              Error: 'No sessions found'
+            });
+
+          case 12:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7, null, [[0, 7]]);
+  }));
+
+  return function (_x13, _x14) {
+    return _ref7.apply(this, arguments);
+  };
+}();
+
+module.exports.get_session = /*#__PURE__*/function () {
+  var _ref8 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
+    var session, _errors4;
+
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            _context8.prev = 0;
+            _context8.next = 3;
+            return _Appointments["default"].findById({
+              _id: req.params.session_id
+            });
+
+          case 3:
+            session = _context8.sent;
+            res.status(200).json({
+              sesh: session,
+              message: 'Session found'
+            });
+            _context8.next = 12;
+            break;
+
+          case 7:
+            _context8.prev = 7;
+            _context8.t0 = _context8["catch"](0);
+            _errors4 = (0, _handler.handleErrors)(_context8.t0);
+            console.log(_errors4);
+            res.json({
+              Error: 'Session not found'
+            });
+
+          case 12:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8, null, [[0, 7]]);
+  }));
+
+  return function (_x15, _x16) {
+    return _ref8.apply(this, arguments);
   };
 }();

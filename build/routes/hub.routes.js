@@ -46,13 +46,16 @@ router.get('/reactivate/patient/:patient_id', _middlewares.authJwt.verifyToken, 
 router.get('/deactivate/patient/:patient_id', _middlewares.authJwt.verifyToken, patientCtrl.deactivate_patient); //Get Patients
 
 router.get('/get/patient/:patient_id', _middlewares.authJwt.verifyToken, patientCtrl.get_patient);
-router.get('/get/all/patients/:userId', _middlewares.authJwt.verifyToken, patientCtrl.get_all_patients); //Appointment Management
+router.get('/get/all/patients/:userId', _middlewares.authJwt.verifyToken, patientCtrl.get_all_patients); //Appointment / Session Management
 
 router.post('/create/appointment/:patient_id', _middlewares.authJwt.verifyToken, appointmentCtrl.create_appointment);
 router.patch('/update/appointment/:appointment_id', _middlewares.authJwt.verifyToken, appointmentCtrl.update_appointment);
 router["delete"]('/delete/appointment/:appointment_id', _middlewares.authJwt.verifyToken, appointmentCtrl.delete_appointment);
 router.get('/complete/appointment/:appointment_id', _middlewares.authJwt.verifyToken, appointmentCtrl.set_as_completed);
-router.get('/pending/appointment/:appointment_id', _middlewares.authJwt.verifyToken, appointmentCtrl.set_to_pending); //Appointment -Emotional Data
+router.get('/pending/appointment/:appointment_id', _middlewares.authJwt.verifyToken, appointmentCtrl.set_to_pending); //Get Appointment / Session
+
+router.get('/get/session/:session_id', _middlewares.authJwt.verifyToken, appointmentCtrl.get_session);
+router.get('/get/all/appointments/:patient_id', _middlewares.authJwt.verifyToken, appointmentCtrl.get_all_appointments); //Appointment / Session -Emotional Data
 
 router.patch('/appointment/data/insert/:appointment_id', _middlewares.authJwt.verifyToken, appointmentCtrl.insert_data);
 var _default = router;

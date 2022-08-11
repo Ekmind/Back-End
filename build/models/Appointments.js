@@ -8,7 +8,7 @@ exports["default"] = void 0;
 var mongoose = require('mongoose');
 
 var appointmentSchema = new mongoose.Schema({
-  date: Date,
+  date: String,
   notes: String,
   patient: {
     ref: 'Patient',
@@ -18,15 +18,7 @@ var appointmentSchema = new mongoose.Schema({
     type: Boolean,
     "default": true
   },
-  emotional_data: [{
-    angry: Number,
-    disgust: Number,
-    fear: Number,
-    happy: Number,
-    neutral: Number,
-    sad: Number,
-    surprise: Number
-  }]
+  emotional_data: []
 }, {
   timestamps: true,
   versionKey: false
