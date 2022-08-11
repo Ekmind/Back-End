@@ -2,9 +2,8 @@ const jwt = require('jsonwebtoken');
 import User from '../models/User';
 import Role from '../models/Role';
 import { handleErrors } from "../errors/handler.error";
-import cookieParser from 'cookie-parser';
 
-//1h time in ms
+//3h time in ms
 const Time = (1000 * 60 * 60 * 3);
 
 //Token creation function
@@ -16,18 +15,24 @@ const createToken = (id) => {
 
 //Sign Up (User Registration)
 module.exports.signup_post = async (req, res) => {
+    //The function request the name, last name, email and password
     const { name, last_name, email, password } = req.body;
 
     try {
+        //Checks if the role user exists and then creates the new user with the information requested above alongside the default role
+        //Said user will be stored within the database
         const role = await Role.findOne({ name: 'user' });
         const user = await User.create({ name, last_name, email, password, role });
+
+        //Then generates a token 
         const token = createToken(user._id);
 
-
-        console.log('User registered');
         res.header({ 'Access-Control-Allow-Credentials': true });
+
+        //And finally sends the token within a cookie as a response so the new user can be logged in as soon as the new account is made.
         res.cookie('jwt', token, { httpOnly: true, maxAge: Time, sameSite: false, secure: false, sameSite: 'lax' });
         res.status(200).json('User registered');
+        console.log('User registered');
 
     } catch (err) {
         const errors = handleErrors(err);

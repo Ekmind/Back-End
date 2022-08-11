@@ -258,3 +258,16 @@ module.exports.get_all_appointments = async (req, res) => {
         res.json({ Error: 'No sessions found' });
     }
 }
+
+module.exports.get_session = async (req, res) => {
+    try {
+
+        const session = await Appointment.findById({ _id: req.params.session_id });
+        res.status(200).json({ sesh: session, message: 'Session found' });
+
+    } catch (err) {
+        const errors = handleErrors(err);
+        console.log(errors);
+        res.json({ Error: 'Session not found' });
+    }
+}

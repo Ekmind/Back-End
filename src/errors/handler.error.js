@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = 'src/errors/logs/errors.json';
+
 export const handleErrors = (err) => {
     const message = [{ error: err.message, code: err.code },];
     const value = (data) => { return JSON.stringify(data, null, 2); }

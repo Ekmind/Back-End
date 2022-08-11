@@ -12,15 +12,7 @@ const appointmentSchema = new mongoose.Schema(
             type: Boolean,
             default: true
         },
-        emotional_data: [{
-            angry: Number,
-            disgust: Number,
-            fear: Number,
-            happy: Number,
-            neutral: Number,
-            sad: Number,
-            surprise: Number
-        }]
+        emotional_data: []
     },
     {
         timestamps: true,

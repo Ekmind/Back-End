@@ -1,10 +1,8 @@
 import * as bcrypt from "bcrypt";
-import Patient from "./Patient";
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
 
-
-
+//User model used to store date within the database
 const userSchema = new mongoose.Schema({
     name: {
         type: String,

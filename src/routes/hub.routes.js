@@ -42,6 +42,7 @@ router.get('/complete/appointment/:appointment_id', authJwt.verifyToken, appoint
 router.get('/pending/appointment/:appointment_id', authJwt.verifyToken, appointmentCtrl.set_to_pending);
 
 //Get Appointment / Session
+router.get('/get/session/:session_id', authJwt.verifyToken, appointmentCtrl.get_session)
 router.get('/get/all/appointments/:patient_id', authJwt.verifyToken, appointmentCtrl.get_all_appointments);
 
 //Appointment / Session -Emotional Data
