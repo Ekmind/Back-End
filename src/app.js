@@ -7,6 +7,7 @@ import { createRoles } from "./libs/initialSetup";
 import { handleErrors } from "./errors/handler.error";
 const cookieParser = require('cookie-parser');
 const CORS = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express();
 createRoles();
@@ -17,7 +18,8 @@ app.use(CORS({
 }));
 app.set('pkg', pkg);
 app.use(morgan('dev'));
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }))
 app.use(cookieParser());
 
 app.get('/', (req, res) => {
